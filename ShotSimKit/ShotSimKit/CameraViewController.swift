@@ -7,12 +7,18 @@
 
 import Foundation
 import WebRTC
+import Combine
 
-class CameraViewController: ObservableObject {
+// TODO: Observable macro
+public class CameraViewController: ObservableObject {
     
-    @Published var isConnected: Bool = false
-    @Published var hasRemoteSdp: Bool = false
-    @Published var remoteVideoTrack: RTCVideoTrack?
+    public static func factory() -> CameraViewController {
+        return CameraViewController.init(signalClient: SignalingClient.defaultClient, webRTCClient: WebRTCClient.defaultClient)
+    }
+    
+    @Published public var isConnected: Bool = false
+    @Published public var hasRemoteSdp: Bool = false
+    @Published public var remoteVideoTrack: RTCVideoTrack?
     
     private let signalClient: SignalingClient
     private let webRTCClient: WebRTCClient

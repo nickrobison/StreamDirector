@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import ShotSimKit
 
 @main
 struct StreamDirectorApp: App {
@@ -25,12 +26,8 @@ struct StreamDirectorApp: App {
 
     var body: some Scene {
         WindowGroup {
-            CameraView(viewModel: buildCameraVM())
+            CameraView(viewModel: CameraViewController.factory())
         }
         .modelContainer(sharedModelContainer)
-    }
-    
-    private func buildCameraVM() -> CameraViewController {
-        return CameraViewController.init(signalClient: SignalingClient.defaultClient, webRTCClient: WebRTCClient.defaultClient)
     }
 }

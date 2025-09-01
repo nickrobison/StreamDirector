@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ShotSimKit
 
 struct CameraView: View {
     @StateObject var viewModel: CameraViewController

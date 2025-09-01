@@ -7,14 +7,14 @@
 
 import Foundation
 
-public class NativeWebSocket: NSObject, WebSocketProvider {
+class NativeWebSocket: NSObject, WebSocketProvider {
     
     public var delegate: WebSocketProviderDelegate?
     private let url: URL
     private var socket: URLSessionWebSocketTask?
     private lazy var urlSession: URLSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     
-    public init(url: URL) {
+    init(url: URL) {
         self.url = url
         super.init()
     }

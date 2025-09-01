@@ -6,7 +6,6 @@
 //
 import Foundation
 import WebRTC
-import ShotSimKit
 
 fileprivate let signalingServerUrl = URL(string: "ws://localhost")!
 
