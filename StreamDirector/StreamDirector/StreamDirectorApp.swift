@@ -1,0 +1,36 @@
+//
+//  StreamDirectorApp.swift
+//  StreamDirector
+//
+//  Created by Nick Robison on 8/31/25.
+//
+
+import SwiftUI
+import SwiftData
+
+@main
+struct StreamDirectorApp: App {
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            Item.self,
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
+
+    var body: some Scene {
+        WindowGroup {
+            CameraView(viewModel: buildCameraVM())
+        }
+        .modelContainer(sharedModelContainer)
+    }
+    
+    private func buildCameraVM() -> CameraViewController {
+        return CameraViewController.init(signalClient: SignalingClient.defaultClient, webRTCClient: WebRTCClient.defaultClient)
+    }
+}
