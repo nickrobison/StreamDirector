@@ -7,26 +7,26 @@
 
 import Foundation
 
-class NativeWebSocket: NSObject, WebSocketProvider {
+public class NativeWebSocket: NSObject, WebSocketProvider {
     
-    var delegate: WebSocketProviderDelegate?
+    public var delegate: WebSocketProviderDelegate?
     private let url: URL
     private var socket: URLSessionWebSocketTask?
     private lazy var urlSession: URLSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     
-    init(url: URL) {
+    public init(url: URL) {
         self.url = url
         super.init()
     }
     
-    func connect() {
+    public func connect() {
         let socket = urlSession.webSocketTask(with: url)
         socket.resume()
         self.socket = socket
         self.readMessage()
     }
     
-    func send(data: Data) {
+    public func send(data: Data) {
         self.socket?.send(.data(data)) { _ in }
     }
     
@@ -55,11 +55,11 @@ class NativeWebSocket: NSObject, WebSocketProvider {
 }
 
 extension NativeWebSocket: URLSessionWebSocketDelegate, URLSessionDelegate {
-    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
+    public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
             self.delegate?.webSocketDidConnect(self)
         }
         
-        func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
+    public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
             self.disconnect()
         }
 }
