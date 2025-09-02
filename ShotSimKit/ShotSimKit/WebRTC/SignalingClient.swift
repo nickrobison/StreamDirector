@@ -6,8 +6,9 @@
 //
 import Foundation
 import WebRTC
+import SDKit
 
-fileprivate let signalingServerUrl = URL(string: "ws://localhost")!
+fileprivate let signalingServerUrl = #staticURL("ws://localhost")
 
 protocol SignalClientDelegate: AnyObject {
     func signalClientDidConnect(_ signalClient: SignalingClient)
