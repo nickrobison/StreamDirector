@@ -1,0 +1,659 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EB369C912E6644D900834E5E /* ShotSimKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB369C902E6644D900834E5E /* ShotSimKit.framework */; };
+		EB369C922E6644D900834E5E /* ShotSimKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB369C902E6644D900834E5E /* ShotSimKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EB369CAA2E66471A00834E5E /* WebRTC in Frameworks */ = {isa = PBXBuildFile; productRef = EB369CA92E66471A00834E5E /* WebRTC */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EB2FDEE02E64F6C0003BA14B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB2FDEC72E64F6BC003BA14B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EB2FDECE2E64F6BC003BA14B;
+			remoteInfo = StreamDirector;
+		};
+		EB2FDEEA2E64F6C0003BA14B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB2FDEC72E64F6BC003BA14B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EB2FDECE2E64F6BC003BA14B;
+			remoteInfo = StreamDirector;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EBB4C5A82E6642A800C31646 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EB369C922E6644D900834E5E /* ShotSimKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		EB2FDECF2E64F6BC003BA14B /* StreamDirector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StreamDirector.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB2FDEDF2E64F6C0003BA14B /* StreamDirectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamDirectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB2FDEE92E64F6C0003BA14B /* StreamDirectorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamDirectorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB369C902E6644D900834E5E /* ShotSimKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ShotSimKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB369CCF2E66495000834E5E /* SDKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDKit.xcodeproj; path = ../SDKit/SDKit.xcodeproj; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		EB2FDED12E64F6BC003BA14B /* StreamDirector */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = StreamDirector;
+			sourceTree = "<group>";
+		};
+		EB2FDEE22E64F6C0003BA14B /* StreamDirectorTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = StreamDirectorTests;
+			sourceTree = "<group>";
+		};
+		EB2FDEEC2E64F6C0003BA14B /* StreamDirectorUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = StreamDirectorUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EB2FDECC2E64F6BC003BA14B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB369C912E6644D900834E5E /* ShotSimKit.framework in Frameworks */,
+				EB369CAA2E66471A00834E5E /* WebRTC in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB2FDEDC2E64F6C0003BA14B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB2FDEE62E64F6C0003BA14B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EB2FDEC62E64F6BC003BA14B = {
+			isa = PBXGroup;
+			children = (
+				EB369CCF2E66495000834E5E /* SDKit.xcodeproj */,
+				EB2FDED12E64F6BC003BA14B /* StreamDirector */,
+				EB2FDEE22E64F6C0003BA14B /* StreamDirectorTests */,
+				EB2FDEEC2E64F6C0003BA14B /* StreamDirectorUITests */,
+				EBB4C5862E66415400C31646 /* Frameworks */,
+				EB2FDED02E64F6BC003BA14B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EB2FDED02E64F6BC003BA14B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EB2FDECF2E64F6BC003BA14B /* StreamDirector.app */,
+				EB2FDEDF2E64F6C0003BA14B /* StreamDirectorTests.xctest */,
+				EB2FDEE92E64F6C0003BA14B /* StreamDirectorUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EB369CD22E66495000834E5E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EBB4C5862E66415400C31646 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EB369C902E6644D900834E5E /* ShotSimKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EB2FDECE2E64F6BC003BA14B /* StreamDirector */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB2FDEF32E64F6C0003BA14B /* Build configuration list for PBXNativeTarget "StreamDirector" */;
+			buildPhases = (
+				EB2FDECB2E64F6BC003BA14B /* Sources */,
+				EB2FDECC2E64F6BC003BA14B /* Frameworks */,
+				EB2FDECD2E64F6BC003BA14B /* Resources */,
+				EBB4C5A82E6642A800C31646 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				EB2FDED12E64F6BC003BA14B /* StreamDirector */,
+			);
+			name = StreamDirector;
+			packageProductDependencies = (
+				EB369CA92E66471A00834E5E /* WebRTC */,
+			);
+			productName = StreamDirector;
+			productReference = EB2FDECF2E64F6BC003BA14B /* StreamDirector.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EB2FDEDE2E64F6C0003BA14B /* StreamDirectorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB2FDEF62E64F6C0003BA14B /* Build configuration list for PBXNativeTarget "StreamDirectorTests" */;
+			buildPhases = (
+				EB2FDEDB2E64F6C0003BA14B /* Sources */,
+				EB2FDEDC2E64F6C0003BA14B /* Frameworks */,
+				EB2FDEDD2E64F6C0003BA14B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EB2FDEE12E64F6C0003BA14B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EB2FDEE22E64F6C0003BA14B /* StreamDirectorTests */,
+			);
+			name = StreamDirectorTests;
+			packageProductDependencies = (
+			);
+			productName = StreamDirectorTests;
+			productReference = EB2FDEDF2E64F6C0003BA14B /* StreamDirectorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EB2FDEE82E64F6C0003BA14B /* StreamDirectorUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB2FDEF92E64F6C0003BA14B /* Build configuration list for PBXNativeTarget "StreamDirectorUITests" */;
+			buildPhases = (
+				EB2FDEE52E64F6C0003BA14B /* Sources */,
+				EB2FDEE62E64F6C0003BA14B /* Frameworks */,
+				EB2FDEE72E64F6C0003BA14B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EB2FDEEB2E64F6C0003BA14B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EB2FDEEC2E64F6C0003BA14B /* StreamDirectorUITests */,
+			);
+			name = StreamDirectorUITests;
+			packageProductDependencies = (
+			);
+			productName = StreamDirectorUITests;
+			productReference = EB2FDEE92E64F6C0003BA14B /* StreamDirectorUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EB2FDEC72E64F6BC003BA14B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					EB2FDECE2E64F6BC003BA14B = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					EB2FDEDE2E64F6C0003BA14B = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = EB2FDECE2E64F6BC003BA14B;
+					};
+					EB2FDEE82E64F6C0003BA14B = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = EB2FDECE2E64F6BC003BA14B;
+					};
+				};
+			};
+			buildConfigurationList = EB2FDECA2E64F6BC003BA14B /* Build configuration list for PBXProject "StreamDirector" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EB2FDEC62E64F6BC003BA14B;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				EB369CA82E66471A00834E5E /* XCRemoteSwiftPackageReference "WebRTC" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EB2FDED02E64F6BC003BA14B /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = EB369CD22E66495000834E5E /* Products */;
+					ProjectRef = EB369CCF2E66495000834E5E /* SDKit.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				EB2FDECE2E64F6BC003BA14B /* StreamDirector */,
+				EB2FDEDE2E64F6C0003BA14B /* StreamDirectorTests */,
+				EB2FDEE82E64F6C0003BA14B /* StreamDirectorUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EB2FDECD2E64F6BC003BA14B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB2FDEDD2E64F6C0003BA14B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB2FDEE72E64F6C0003BA14B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EB2FDECB2E64F6BC003BA14B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB2FDEDB2E64F6C0003BA14B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB2FDEE52E64F6C0003BA14B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EB2FDEE12E64F6C0003BA14B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EB2FDECE2E64F6BC003BA14B /* StreamDirector */;
+			targetProxy = EB2FDEE02E64F6C0003BA14B /* PBXContainerItemProxy */;
+		};
+		EB2FDEEB2E64F6C0003BA14B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EB2FDECE2E64F6BC003BA14B /* StreamDirector */;
+			targetProxy = EB2FDEEA2E64F6C0003BA14B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EB2FDEF12E64F6C0003BA14B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EB2FDEF22E64F6C0003BA14B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		EB2FDEF42E64F6C0003BA14B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StreamDirector/StreamDirector.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nickrobison.StreamDirector;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Debug;
+		};
+		EB2FDEF52E64F6C0003BA14B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StreamDirector/StreamDirector.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nickrobison.StreamDirector;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Release;
+		};
+		EB2FDEF72E64F6C0003BA14B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nickrobison.StreamDirectorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StreamDirector.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StreamDirector";
+				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Debug;
+		};
+		EB2FDEF82E64F6C0003BA14B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nickrobison.StreamDirectorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StreamDirector.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StreamDirector";
+				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Release;
+		};
+		EB2FDEFA2E64F6C0003BA14B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nickrobison.StreamDirectorUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_TARGET_NAME = StreamDirector;
+				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Debug;
+		};
+		EB2FDEFB2E64F6C0003BA14B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nickrobison.StreamDirectorUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_TARGET_NAME = StreamDirector;
+				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EB2FDECA2E64F6BC003BA14B /* Build configuration list for PBXProject "StreamDirector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB2FDEF12E64F6C0003BA14B /* Debug */,
+				EB2FDEF22E64F6C0003BA14B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB2FDEF32E64F6C0003BA14B /* Build configuration list for PBXNativeTarget "StreamDirector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB2FDEF42E64F6C0003BA14B /* Debug */,
+				EB2FDEF52E64F6C0003BA14B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB2FDEF62E64F6C0003BA14B /* Build configuration list for PBXNativeTarget "StreamDirectorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB2FDEF72E64F6C0003BA14B /* Debug */,
+				EB2FDEF82E64F6C0003BA14B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB2FDEF92E64F6C0003BA14B /* Build configuration list for PBXNativeTarget "StreamDirectorUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB2FDEFA2E64F6C0003BA14B /* Debug */,
+				EB2FDEFB2E64F6C0003BA14B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EB369CA82E66471A00834E5E /* XCRemoteSwiftPackageReference "WebRTC" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stasel/WebRTC.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 139.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EB369CA92E66471A00834E5E /* WebRTC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB369CA82E66471A00834E5E /* XCRemoteSwiftPackageReference "WebRTC" */;
+			productName = WebRTC;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = EB2FDEC72E64F6BC003BA14B /* Project object */;
+}
