@@ -7,6 +7,8 @@
 import Foundation
 import WebRTC
 import SDKit
+// FIXME: Ok, this is nonsense.
+import SDMacros
 
 fileprivate let signalingServerUrl = #staticURL("ws://localhost")
 
@@ -41,6 +43,7 @@ final class SignalingClient {
     
     func send(sdp rtcSdp: RTCSessionDescription) {
         let message = Message.sdp(SessionDescription(from: rtcSdp))
+        debugPrint("Sending session desc: \(message)")
         do {
             let dataMessage = try self.encoder.encode(message)
             
@@ -52,6 +55,7 @@ final class SignalingClient {
     
     func send(candidate rtcIceCandidate: RTCIceCandidate) {
         let message = Message.candidate(IceCandidate.init(from: rtcIceCandidate))
+        debugPrint("Sending candidate: \(message)")
         do {
             let dataMessage = try self.encoder.encode(message)
             self.webSocket.send(data: dataMessage)
@@ -83,6 +87,25 @@ extension SignalingClient: WebSocketProviderDelegate {
         let message: Message
         do {
             message = try self.decoder.decode(Message.self, from: data)
+        } catch {
+            debugPrint("Warning: Could not decode incoming message: \(error)")
+            return
+        }
+        
+        switch message {
+        case .sdp(let sessionDescription):
+            self.delegate?.signalClient(self, didReceiveRemoteSdp: sessionDescription.rtcSessionDescription)
+        case .candidate(let iceCandidate):
+            self.delegate?.signalClient(self, didReceiveCandidate: iceCandidate.rtcIceCandidate)
+        }
+    }
+    
+    func webSocket(_ webSocket: WebSocketProvider, didReceiveMessage msg: String) {
+        debugPrint("webSocket did receive string")
+        let message: Message
+        do {
+            let jsonData = msg.data(using: .utf8)!
+            message = try self.decoder.decode(Message.self, from: jsonData)
         } catch {
             debugPrint("Warning: Could not decode incoming message: \(error)")
             return

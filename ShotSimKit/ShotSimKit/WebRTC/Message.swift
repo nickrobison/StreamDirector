@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 enum Message {
     case sdp(SessionDescription)
     case candidate(IceCandidate)
@@ -17,11 +18,12 @@ extension Message: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(String.self, forKey: .type)
         switch type {
-        case String(describing: SessionDescription.self):
-            self = .sdp(try container.decode(SessionDescription.self, forKey: .payload))
+        case String("offer"):
+            self = .sdp(try container.decode(SessionDescription.self, forKey: .data))
         case String(describing: IceCandidate.self):
-            self = .candidate(try container.decode(IceCandidate.self, forKey: .payload))
+            self = .candidate(try container.decode(IceCandidate.self, forKey: .data))
         default:
+            debugPrint("What is this type: \(type)")
             throw DecodeError.unknownType
         }
     }
@@ -30,10 +32,10 @@ extension Message: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .sdp(let sessionDescription):
-            try container.encode(sessionDescription, forKey: .payload)
+            try container.encode(sessionDescription, forKey: .data)
             try container.encode(String(describing: SessionDescription.self), forKey: .type)
         case .candidate(let iceCandidate):
-            try container.encode(iceCandidate, forKey: .payload)
+            try container.encode(iceCandidate, forKey: .data)
             try container.encode(String(describing: IceCandidate.self), forKey: .type)
         }
     }
@@ -43,6 +45,6 @@ extension Message: Codable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case type, payload
+        case type, data
     }
 }

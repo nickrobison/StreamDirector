@@ -22,6 +22,7 @@ public class CameraViewController: ObservableObject {
     
     private let signalClient: SignalingClient
     private let webRTCClient: WebRTCClient
+    private var remoteConnections = 0
     
     init(signalClient: SignalingClient, webRTCClient: WebRTCClient) {
         self.signalClient = signalClient
@@ -39,6 +40,11 @@ extension CameraViewController: SignalClientDelegate {
         DispatchQueue.main.async {
             self.isConnected = true
         }
+        self.webRTCClient.offer(completion: {(sdp) in
+            debugPrint("I offered, and this is what I got: \(sdp)")
+            self.signalClient.send(sdp: sdp)
+            
+        })
     }
     
     func signalClientDidDisconnect(_ signalClient: SignalingClient) {

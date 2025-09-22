@@ -8,11 +8,7 @@
 import Foundation
 import WebRTC
 
-fileprivate let defaultIceServers = ["stun:stun.l.google.com:19302",
-                                     "stun:stun1.l.google.com:19302",
-                                     "stun:stun2.l.google.com:19302",
-                                     "stun:stun3.l.google.com:19302",
-                                     "stun:stun4.l.google.com:19302"]
+fileprivate let defaultIceServers = ["stun:stun.l.google.com:19302"]
 
 protocol WebRTCClientDelegate: AnyObject {
     func webRTCClient(_ client: WebRTCClient, didDiscoverLocalCandidate candidate: RTCIceCandidate)
@@ -60,15 +56,63 @@ final class WebRTCClient: NSObject {
                 }
         self.peerConnection = peerConnection
         super.init()
+        self.setupConnection()
         self.peerConnection.delegate = self
     }
     
     func set(remoteSdp: RTCSessionDescription, completion: @escaping (Error?) -> ()) {
+        debugPrint("remoteSdp set remote description")
         self.peerConnection.setRemoteDescription(remoteSdp, completionHandler: completion)
     }
     
     func set(remoteCandidate: RTCIceCandidate, completion: @escaping (Error?) -> ()) {
+        debugPrint("remoteSdp add remote candidate")
         self.peerConnection.add(remoteCandidate, completionHandler: completion)
+    }
+    
+    public func offer(completion: @escaping (_ sdp: RTCSessionDescription)-> Void) -> Void {
+        let constraints = RTCMediaConstraints(mandatoryConstraints: self.mediaConstraints, optionalConstraints: nil)
+        debugPrint("Offering: \(constraints)")
+        self.peerConnection.offer(for: constraints) { (sdp, error) in
+            guard let sdp else {
+                return
+            }
+            
+            debugPrint("Setting local description to \(sdp)")
+            
+            self.peerConnection.setLocalDescription(sdp, completionHandler: { error in
+                debugPrint("Done setting local")
+                if let error {
+                    debugPrint("Hmm.... \(error) on set local description")
+                }
+                completion(sdp)
+            })
+        }
+    }
+    
+    public func answer(completion: @escaping (_ sdp: RTCSessionDescription) -> Void)  {
+        debugPrint("I have an answer, right?")
+    }
+    
+    private func setupConnection() -> Void {
+        // Remote video
+        self.remoteVideoTrack = self.peerConnection.transceivers.first { $0.mediaType == .video}?.receiver.track as? RTCVideoTrack
+        
+        if let dataChannel = createDataChannel() {
+            dataChannel.delegate = self
+            self.localDataChannel = dataChannel
+            
+        }
+    }
+    
+    private func createDataChannel() -> RTCDataChannel? {
+        let config = RTCDataChannelConfiguration()
+        guard let dataChannel = self.peerConnection.dataChannel(forLabel: "webRtc", configuration: config) else {
+            debugPrint("Couldn't create data channel. Awesome")
+            return nil
+        }
+        return dataChannel
+        
     }
 }
 
@@ -115,3 +159,14 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
     
 }
 
+extension WebRTCClient: RTCDataChannelDelegate {
+    func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
+        debugPrint("dataChannel did change state")
+    }
+    
+    func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
+        debugPrint("dataChannel did receive data")
+    }
+    
+    
+}
