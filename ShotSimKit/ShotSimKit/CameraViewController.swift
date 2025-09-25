@@ -58,6 +58,12 @@ extension CameraViewController: SignalClientDelegate {
             debugPrint("signalClient did received sdp")
             DispatchQueue.main.async {
                 self.hasRemoteSdp = true
+                // Now, what? Answer?
+                debugPrint("Now, I think I answer back?")
+                self.webRTCClient.answer { description in
+                    debugPrint("Answered with something \(description)")
+                }
+                
             }
             
         }

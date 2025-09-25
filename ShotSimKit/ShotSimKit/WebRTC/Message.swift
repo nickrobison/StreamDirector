@@ -13,14 +13,15 @@ enum Message {
     case candidate(IceCandidate)
 }
 
-extension Message: Codable {
-    init(from decoder: Decoder) throws {
+extension Message: DecodableWithConfiguration {
+    
+    init(from decoder: Decoder, configuration: SessionDescriptionConfiguration) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(String.self, forKey: .type)
         switch type {
         case String("offer"):
-            self = .sdp(try container.decode(SessionDescription.self, forKey: .data))
-        case String(describing: IceCandidate.self):
+            self = .sdp(try container.decode(SessionDescription.self, forKey: .data, configuration: configuration))
+        case String("candidate"):
             self = .candidate(try container.decode(IceCandidate.self, forKey: .data))
         default:
             debugPrint("What is this type: \(type)")
@@ -33,18 +34,18 @@ extension Message: Codable {
         switch self {
         case .sdp(let sessionDescription):
             try container.encode(sessionDescription, forKey: .data)
-            try container.encode(String(describing: SessionDescription.self), forKey: .type)
+            try container.encode(String("offer"), forKey: .type)
         case .candidate(let iceCandidate):
             try container.encode(iceCandidate, forKey: .data)
-            try container.encode(String(describing: IceCandidate.self), forKey: .type)
+            try container.encode(String("candidate"), forKey: .type)
         }
     }
-    
+//    
     enum DecodeError: Error {
         case unknownType
     }
-    
+ 
     enum CodingKeys: String, CodingKey {
-        case type, data
+        case data, type
     }
 }

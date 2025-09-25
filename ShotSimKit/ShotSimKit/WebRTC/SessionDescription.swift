@@ -22,25 +22,46 @@ enum SdpType: String, Codable {
 }
 
 /// This struct is a swift wrapper over `RTCSessionDescription` for easy encode and decode
-struct SessionDescription: Codable {
+struct SessionDescription {
     let sdp: String
-//    let type: SdpType
+    let connectionId: UUID?
+    let type: SdpType
 
     
-    init(from rtcSessionDescription: RTCSessionDescription) {
+    init(from rtcSessionDescription: RTCSessionDescription, id: UUID) {
         self.sdp = rtcSessionDescription.sdp
+        self.connectionId = id
         
-//        switch rtcSessionDescription.type {
-//        case .offer:    self.type = .offer
-//        case .prAnswer: self.type = .prAnswer
-//        case .answer:   self.type = .answer
-//        case .rollback: self.type = .rollback
-//        @unknown default:
-//            fatalError("Unknown RTCSessionDescription type: \(rtcSessionDescription.type.rawValue)")
-//        }
+        switch rtcSessionDescription.type {
+        case .offer:    self.type = .offer
+        case .prAnswer: self.type = .prAnswer
+        case .answer:   self.type = .answer
+        case .rollback: self.type = .rollback
+        @unknown default:
+            fatalError("Unknown RTCSessionDescription type: \(rtcSessionDescription.type.rawValue)")
+        }
     }
     
     var rtcSessionDescription: RTCSessionDescription {
         return RTCSessionDescription(type: SdpType.offer.rtcSdpType, sdp: self.sdp)
+    }
+}
+
+struct SessionDescriptionConfiguration {
+    let type: SdpType
+}
+
+extension SessionDescription: Encodable, DecodableWithConfiguration {
+    
+    init(from decoder: any Decoder, configuration: SessionDescriptionConfiguration) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.connectionId = try container.decodeIfPresent(UUID.self, forKey: .connectionId)
+        self.sdp = try container.decode(String.self, forKey: .sdp)
+        self.type = configuration.type
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case sdp, connectionId, type
     }
 }

@@ -61,8 +61,12 @@ final class WebRTCClient: NSObject {
     }
     
     func set(remoteSdp: RTCSessionDescription, completion: @escaping (Error?) -> ()) {
-        debugPrint("remoteSdp set remote description")
+        debugPrint("remoteSdp set remote description \(remoteSdp)")
         self.peerConnection.setRemoteDescription(remoteSdp, completionHandler: completion)
+        debugPrint("Remote? \(String(describing: self.peerConnection.remoteDescription))")
+        for tran in self.peerConnection.transceivers {
+            debugPrint("One tran, two tran \(String(describing: tran.receiver.track))")
+        }
     }
     
     func set(remoteCandidate: RTCIceCandidate, completion: @escaping (Error?) -> ()) {
@@ -98,10 +102,11 @@ final class WebRTCClient: NSObject {
         // Remote video
         self.remoteVideoTrack = self.peerConnection.transceivers.first { $0.mediaType == .video}?.receiver.track as? RTCVideoTrack
         
+        debugPrint("Track? \(String(describing: self.remoteVideoTrack))")
+        
         if let dataChannel = createDataChannel() {
             dataChannel.delegate = self
             self.localDataChannel = dataChannel
-            
         }
     }
     
