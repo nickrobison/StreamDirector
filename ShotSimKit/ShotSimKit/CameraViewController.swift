@@ -55,14 +55,15 @@ extension CameraViewController: SignalClientDelegate {
     
     func signalClient(_ signalClient: SignalingClient, didReceiveRemoteSdp sdp: RTCSessionDescription) {
         self.webRTCClient.set(remoteSdp: sdp) { (error) in
-            debugPrint("signalClient did received sdp")
+            debugPrint("signalClient did received sdp: \(String(describing: error))")
             DispatchQueue.main.async {
                 self.hasRemoteSdp = true
                 // Now, what? Answer?
-                debugPrint("Now, I think I answer back?")
-                self.webRTCClient.answer { description in
-                    debugPrint("Answered with something \(description)")
-                }
+                self.webRTCClient.doTheVideoThings()
+                
+                debugPrint("Now, I think we're ready to stream video?: \(String(describing: self.webRTCClient.remoteVideoTrack))")
+                self.remoteVideoTrack = self.webRTCClient.remoteVideoTrack
+                self.webRTCClient.startVideo()
                 
             }
             
@@ -71,6 +72,10 @@ extension CameraViewController: SignalClientDelegate {
     
     func signalClient(_ signalClient: SignalingClient, didReceiveCandidate candidate: RTCIceCandidate) {
         print("Received remote candidate. What do I do with this?")
+        self.webRTCClient.set(remoteCandidate: candidate) { error in
+            debugPrint("Ok, remote set. Now what?")
+        }
+        
     }
 }
 

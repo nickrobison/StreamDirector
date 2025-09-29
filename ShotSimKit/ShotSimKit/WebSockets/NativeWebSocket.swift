@@ -28,14 +28,11 @@ class NativeWebSocket: NSObject, WebSocketProvider {
     }
     
     public func send(data: Data) {
-        debugPrint("Trying to send message")
         self.socket?.send(.data(data)) { error in
-            debugPrint("I'm back in the closure?")
             if let error {
                 debugPrint("Error when sending: \(error)")
             }
         }
-        debugPrint("Done with the sending stuff")
     }
     
     private func readMessage() {
@@ -47,7 +44,6 @@ class NativeWebSocket: NSObject, WebSocketProvider {
                 self.delegate?.webSocket(self, didReceiveData: data)
                 self.readMessage()
             case .success(.string(let msgString)):
-                debugPrint("Should have received data, but got \(msgString) instead.")
                 self.delegate?.webSocket(self, didReceiveMessage: msgString)
                 self.readMessage()
             case .success:

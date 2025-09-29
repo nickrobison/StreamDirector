@@ -46,7 +46,6 @@ final class SignalingClient {
         let payload = Message.sdp(SessionDescription(from: rtcSdp, id: connectionId))
         // FIXME: Convenience constructor?
         let message = SignalingMessage(from: connectionId, to: nil, data: payload, type: "offer")
-        debugPrint("Sending session desc: \(message)")
         do {
             let dataMessage = try self.encoder.encode(message)
             
@@ -105,7 +104,6 @@ extension SignalingClient: WebSocketProviderDelegate {
     }
     
     func webSocket(_ webSocket: WebSocketProvider, didReceiveMessage msg: String) {
-        debugPrint("webSocket did receive string")
         let message: SignalingMessage
         do {
             let jsonData = msg.data(using: .utf8)!
@@ -116,8 +114,11 @@ extension SignalingClient: WebSocketProviderDelegate {
         }
         
         switch message.data {
-        case .sdp(let sessionDescription):
+        case .sdp(let sessionDescription) where sessionDescription.type == .answer:
+            debugPrint("I have an answer: \(message)")
             self.delegate?.signalClient(self, didReceiveRemoteSdp: sessionDescription.rtcSessionDescription)
+        case .sdp(_): break
+            
         case .candidate(let iceCandidate):
             self.delegate?.signalClient(self, didReceiveCandidate: iceCandidate.rtcIceCandidate)
         }

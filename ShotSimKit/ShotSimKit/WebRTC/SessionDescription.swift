@@ -43,7 +43,7 @@ struct SessionDescription {
     }
     
     var rtcSessionDescription: RTCSessionDescription {
-        return RTCSessionDescription(type: SdpType.offer.rtcSdpType, sdp: self.sdp)
+        return RTCSessionDescription(type: self.type.rtcSdpType, sdp: self.sdp)
     }
 }
 

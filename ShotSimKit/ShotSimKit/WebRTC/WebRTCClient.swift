@@ -34,9 +34,10 @@ final class WebRTCClient: NSObject {
     weak var delegate: WebRTCClientDelegate?
     private let peerConnection: RTCPeerConnection
     private let mediaConstraints = [kRTCMediaConstraintsOfferToReceiveVideo: kRTCMediaConstraintsValueTrue,
-                                    kRTCMediaConstraintsOfferToReceiveAudio: kRTCMediaConstraintsValueFalse]
+                                    kRTCMediaConstraintsOfferToReceiveAudio: kRTCMediaConstraintsValueTrue]
     private var videoCapturer: RTCVideoCapturer?
-    private var remoteVideoTrack: RTCVideoTrack?
+    // FIXME: Shouldn't just leak this out
+    var remoteVideoTrack: RTCVideoTrack?
     private var localDataChannel: RTCDataChannel?
     private var remoteDataChannel: RTCDataChannel?
     
@@ -61,12 +62,19 @@ final class WebRTCClient: NSObject {
     }
     
     func set(remoteSdp: RTCSessionDescription, completion: @escaping (Error?) -> ()) {
-        debugPrint("remoteSdp set remote description \(remoteSdp)")
+        debugPrint("This should be an answer, right? \(remoteSdp)")
         self.peerConnection.setRemoteDescription(remoteSdp, completionHandler: completion)
+    }
+    
+    func doTheVideoThings() {
         debugPrint("Remote? \(String(describing: self.peerConnection.remoteDescription))")
         for tran in self.peerConnection.transceivers {
             debugPrint("One tran, two tran \(String(describing: tran.receiver.track))")
         }
+        // Remote video
+        self.remoteVideoTrack = self.peerConnection.transceivers.first { $0.mediaType == .video}?.receiver.track as? RTCVideoTrack
+        
+        debugPrint("Track? \(String(describing: self.remoteVideoTrack))")
     }
     
     func set(remoteCandidate: RTCIceCandidate, completion: @escaping (Error?) -> ()) {
@@ -139,6 +147,10 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
         self.delegate?.webRTCClient(self, didChangeConnectionState: newState)
     }
     
+    public func peerConnection(_ peerConnection: RTCPeerConnection, didStartReceivingOn transceiver: RTCRtpTransceiver) {
+        debugPrint("peerConnection did start receiving")
+    }
+    
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
         debugPrint("peerConnection new gathering state: \(newState)")
     }
@@ -172,6 +184,26 @@ extension WebRTCClient: RTCDataChannelDelegate {
     func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
         debugPrint("dataChannel did receive data")
     }
+}
+
+extension WebRTCClient {
+    private func setTrackEnabled<T: RTCMediaStreamTrack>(_ type: T.Type, isEnabled: Bool) {
+        peerConnection.transceivers.compactMap {
+            return $0.sender.track as? T
+        }
+        .forEach{ $0.isEnabled = isEnabled}
+    }
     
+    func startVideo() {
+        debugPrint("Remote desc: \(String(describing: self.peerConnection.remoteDescription))")
+        self.setVideoEnabled(true)
+    }
     
+    func stopVideo() {
+        self.setVideoEnabled(false)
+    }
+    
+    private func setVideoEnabled(_ isEnabled: Bool) {
+        setTrackEnabled(RTCVideoTrack.self, isEnabled: isEnabled)
+    }
 }
