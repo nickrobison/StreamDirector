@@ -12,6 +12,7 @@
 		EB369CDD2E66A22600834E5E /* SDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB369CDC2E66A22600834E5E /* SDKit.framework */; };
 		EB369CDE2E66A22600834E5E /* SDKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB369CDC2E66A22600834E5E /* SDKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EB369CE32E66A40E00834E5E /* SDMacros in Frameworks */ = {isa = PBXBuildFile; productRef = EB369CE22E66A40E00834E5E /* SDMacros */; };
+		EB6473012EAEE7BC00984CB6 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = EB6473002EAEE7BC00984CB6 /* Starscream */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 				EB369CDD2E66A22600834E5E /* SDKit.framework in Frameworks */,
 				EB369CE32E66A40E00834E5E /* SDMacros in Frameworks */,
 				EB369CA72E66462D00834E5E /* WebRTC in Frameworks */,
+				EB6473012EAEE7BC00984CB6 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +142,7 @@
 			packageProductDependencies = (
 				EB369CA62E66462D00834E5E /* WebRTC */,
 				EB369CE22E66A40E00834E5E /* SDMacros */,
+				EB6473002EAEE7BC00984CB6 /* Starscream */,
 			);
 			productName = ShotSimKit;
 			productReference = EB369C782E6644BF00834E5E /* ShotSimKit.framework */;
@@ -197,6 +200,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				EB369CA52E66462D00834E5E /* XCRemoteSwiftPackageReference "WebRTC" */,
+				EB6472FF2EAEE7BC00984CB6 /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB369C792E6644BF00834E5E /* Products */;
@@ -537,6 +541,14 @@
 				minimumVersion = 139.0.0;
 			};
 		};
+		EB6472FF2EAEE7BC00984CB6 /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -548,6 +560,11 @@
 		EB369CE22E66A40E00834E5E /* SDMacros */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SDMacros;
+		};
+		EB6473002EAEE7BC00984CB6 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB6472FF2EAEE7BC00984CB6 /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

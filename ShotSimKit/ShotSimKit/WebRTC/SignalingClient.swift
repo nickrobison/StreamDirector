@@ -22,8 +22,14 @@ protocol SignalClientDelegate: AnyObject {
 final class SignalingClient {
     
     public static let defaultClient: SignalingClient = {
-        let webSocket = NativeWebSocket(url: signalingServerUrl)
-        return SignalingClient(webSocket: webSocket)
+        let webSocketProvider: WebSocketProvider
+        
+        if #available(iOS 13.0, *) {
+            webSocketProvider = NativeWebSocket(url: signalingServerUrl)
+        } else {
+            webSocketProvider = StarscreamWebSocket(url: signalingServerUrl)
+        }
+        return SignalingClient(webSocket: webSocketProvider)
     }()
     
     private let decoder = JSONDecoder()
