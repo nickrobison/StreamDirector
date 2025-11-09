@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		EB369C912E6644D900834E5E /* ShotSimKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB369C902E6644D900834E5E /* ShotSimKit.framework */; };
 		EB369C922E6644D900834E5E /* ShotSimKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB369C902E6644D900834E5E /* ShotSimKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EB369CAA2E66471A00834E5E /* WebRTC in Frameworks */ = {isa = PBXBuildFile; productRef = EB369CA92E66471A00834E5E /* WebRTC */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +74,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB369C912E6644D900834E5E /* ShotSimKit.framework in Frameworks */,
-				EB369CAA2E66471A00834E5E /* WebRTC in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,7 +152,6 @@
 			);
 			name = StreamDirector;
 			packageProductDependencies = (
-				EB369CA92E66471A00834E5E /* WebRTC */,
 			);
 			productName = StreamDirector;
 			productReference = EB2FDECF2E64F6BC003BA14B /* StreamDirector.app */;
@@ -239,7 +236,6 @@
 			mainGroup = EB2FDEC62E64F6BC003BA14B;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				EB369CA82E66471A00834E5E /* XCRemoteSwiftPackageReference "WebRTC" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB2FDED02E64F6BC003BA14B /* Products */;
@@ -635,25 +631,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		EB369CA82E66471A00834E5E /* XCRemoteSwiftPackageReference "WebRTC" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/stasel/WebRTC.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 139.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		EB369CA92E66471A00834E5E /* WebRTC */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EB369CA82E66471A00834E5E /* XCRemoteSwiftPackageReference "WebRTC" */;
-			productName = WebRTC;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EB2FDEC72E64F6BC003BA14B /* Project object */;
 }

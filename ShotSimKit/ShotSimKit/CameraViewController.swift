@@ -13,6 +13,11 @@ import Combine
 public class CameraViewController: ObservableObject {
     
     public static func factory() -> CameraViewController {
+        
+        // Debug logging?
+        RTCSetMinDebugLogLevel(.info)
+        RTCEnableMetrics()
+        
         return CameraViewController.init(signalClient: SignalingClient.defaultClient, webRTCClient: WebRTCClient.defaultClient)
     }
     
@@ -32,6 +37,10 @@ public class CameraViewController: ObservableObject {
         self.webRTCClient.delegate = self
         self.signalClient.connect()
     }
+    
+    public func listStreams() {
+        self.webRTCClient.listStreams()
+    }
 }
 
 extension CameraViewController: SignalClientDelegate {
@@ -39,12 +48,10 @@ extension CameraViewController: SignalClientDelegate {
         debugPrint("I'm connected!")
         DispatchQueue.main.async {
             self.isConnected = true
+            self.webRTCClient.offer { session in
+                self.signalClient.send(sdp: session, type: "offer")
+            }
         }
-        self.webRTCClient.offer(completion: {(sdp) in
-            debugPrint("I offered, and this is what I got: \(sdp)")
-            self.signalClient.send(sdp: sdp)
-            
-        })
     }
     
     func signalClientDidDisconnect(_ signalClient: SignalingClient) {
@@ -54,16 +61,14 @@ extension CameraViewController: SignalClientDelegate {
     }
     
     func signalClient(_ signalClient: SignalingClient, didReceiveRemoteSdp sdp: RTCSessionDescription) {
+        debugPrint("Received remote sdp: \(sdp.sdp)")
         self.webRTCClient.set(remoteSdp: sdp) { (error) in
             debugPrint("signalClient did received sdp: \(String(describing: error))")
             DispatchQueue.main.async {
                 self.hasRemoteSdp = true
-                // Now, what? Answer?
-                self.webRTCClient.doTheVideoThings()
-                
-                debugPrint("Now, I think we're ready to stream video?: \(String(describing: self.webRTCClient.remoteVideoTrack))")
-                self.remoteVideoTrack = self.webRTCClient.remoteVideoTrack
+                self.webRTCClient.setupConnection()
                 self.webRTCClient.startVideo()
+                self.remoteVideoTrack = self.webRTCClient.remoteVideoTrack
                 
             }
             
@@ -71,22 +76,28 @@ extension CameraViewController: SignalClientDelegate {
     }
     
     func signalClient(_ signalClient: SignalingClient, didReceiveCandidate candidate: RTCIceCandidate) {
-        print("Received remote candidate. What do I do with this?")
+        debugPrint("I have a remote candidate, I think?")
         self.webRTCClient.set(remoteCandidate: candidate) { error in
-            debugPrint("Ok, remote set. Now what?")
+            debugPrint("Ok, remote set. Now what?. erro: \(error)")
+            // Do the offer
+            self.webRTCClient.offer { session in
+                debugPrint("Here's my offer: \(session)")
+                self.signalClient.send(sdp: session, type: "offer")
+            }
         }
         
     }
 }
 
 extension CameraViewController: WebRTCClientDelegate {
+
     func webRTCClient(_ client: WebRTCClient, didDiscoverLocalCandidate candidate: RTCIceCandidate) {
         debugPrint("discovered local candidate: \(candidate)")
         self.signalClient.send(candidate: candidate)
     }
     
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState) {
-        debugPrint("Connection state changed: \(state)")
+        debugPrint("WebRTCDelegate state changed: \(state.stringValue)")
     }
     
     func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data) {
@@ -94,5 +105,17 @@ extension CameraViewController: WebRTCClientDelegate {
         debugPrint("Received data: \(message)")
     }
     
+    func webRTCClient(_ client: WebRTCClient, didReceive track: RTCVideoTrack) {
+        DispatchQueue.main.async {
+            self.remoteVideoTrack = track
+        }
+    }
     
+    func webRTCClient(_ client: WebRTCClient, didCreateOffer offer: RTCSessionDescription) {
+        self.signalClient.send(sdp: offer, type: "offer")
+    }
+    
+    func webRTCClient(_ client: WebRTCClient, didCreateAnswer answer: RTCSessionDescription) {
+        self.signalClient.send(sdp: answer, type: "answer")
+    }
 }

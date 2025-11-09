@@ -21,14 +21,16 @@ struct CameraView: View {
         } else {
             Text("Disconnected")
         }
-        if ((viewModel.remoteVideoTrack) != nil) {
+        if let vtc = viewModel.remoteVideoTrack {
             VStack {
-                WebRTCVideoView(viewModel.remoteVideoTrack)
+                WebRTCVideoView(vtc)
                     .frame(width: 400, height: 400)
-                    .border(.gray)
+                    .border(.blue)
                 Text("Content for me?")
+                Button("List streams") {
+                    viewModel.listStreams()
+                }
             }
-            
         } else {
             Text("No video yet")
         }

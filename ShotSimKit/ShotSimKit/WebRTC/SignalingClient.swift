@@ -10,7 +10,7 @@ import SDKit
 // FIXME: Ok, this is nonsense.
 import SDMacros
 
-fileprivate let signalingServerUrl = #staticURL("ws://localhost")
+fileprivate let signalingServerUrl = Foundation.URL(string: "ws://localhost")!
 
 protocol SignalClientDelegate: AnyObject {
     func signalClientDidConnect(_ signalClient: SignalingClient)
@@ -48,10 +48,10 @@ final class SignalingClient {
         self.webSocket.connect()
     }
     
-    func send(sdp rtcSdp: RTCSessionDescription) {
+    func send(sdp rtcSdp: RTCSessionDescription, type: String) {
         let payload = Message.sdp(SessionDescription(from: rtcSdp, id: connectionId))
         // FIXME: Convenience constructor?
-        let message = SignalingMessage(from: connectionId, to: nil, data: payload, type: "offer")
+        let message = SignalingMessage(from: connectionId, to: nil, data: payload, type: type)
         do {
             let dataMessage = try self.encoder.encode(message)
             
