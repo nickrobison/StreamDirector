@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		EB369C912E6644D900834E5E /* ShotSimKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB369C902E6644D900834E5E /* ShotSimKit.framework */; };
 		EB369C922E6644D900834E5E /* ShotSimKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB369C902E6644D900834E5E /* ShotSimKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EB72174A2EC1420400E972F9 /* PTZOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7217492EC1420400E972F9 /* PTZOKit.framework */; };
+		EB72174B2EC1420400E972F9 /* PTZOKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB7217492EC1420400E972F9 /* PTZOKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				EB72174B2EC1420400E972F9 /* PTZOKit.framework in Embed Frameworks */,
 				EB369C922E6644D900834E5E /* ShotSimKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -48,6 +51,7 @@
 		EB2FDEE92E64F6C0003BA14B /* StreamDirectorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamDirectorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB369C902E6644D900834E5E /* ShotSimKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ShotSimKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB369CCF2E66495000834E5E /* SDKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDKit.xcodeproj; path = ../SDKit/SDKit.xcodeproj; sourceTree = SOURCE_ROOT; };
+		EB7217492EC1420400E972F9 /* PTZOKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PTZOKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -73,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB72174A2EC1420400E972F9 /* PTZOKit.framework in Frameworks */,
 				EB369C912E6644D900834E5E /* ShotSimKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -126,6 +131,7 @@
 		EBB4C5862E66415400C31646 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EB7217492EC1420400E972F9 /* PTZOKit.framework */,
 				EB369C902E6644D900834E5E /* ShotSimKit.framework */,
 			);
 			name = Frameworks;
