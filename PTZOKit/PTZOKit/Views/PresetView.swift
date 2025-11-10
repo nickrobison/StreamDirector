@@ -28,6 +28,8 @@ struct PresetView: View {
         Button(preset.name) {
             self.handle(preset)
         }
+        // TODO: Replace with button style
+        .frame(maxWidth: .infinity)
         .foregroundStyle(self.color)
         .padding()
         .background(RoundedRectangle(cornerRadius: 20, style: .continuous)

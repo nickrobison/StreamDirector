@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:BMKit/BMKit.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:PTZOKit/PTZOKit.xcodeproj">
    </FileRef>
    <FileRef
