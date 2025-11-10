@@ -31,6 +31,7 @@ struct SwitcherView: View {
 
 extension SwitcherView {
     @Observable
+    @MainActor
     class ViewModel {
         var tracks: [any VideoTrack] = []
         var program: (any VideoTrack)? = nil

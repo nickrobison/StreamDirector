@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public protocol VideoDevice: Identifiable {
+public protocol VideoDevice: Identifiable, Sendable {
     associatedtype Body: View
     @ViewBuilder func makeController() -> Self.Body
 }

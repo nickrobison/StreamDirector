@@ -31,29 +31,10 @@ struct TrackView: View {
     }
 }
 
-extension TrackView {
-    @Observable
-    class ViewModel {
-        var track: any VideoTrack
-        var trackState: TrackState
-        
-        init(track: any VideoTrack, trackState: TrackState) {
-            self.track = track
-            self.trackState = trackState
-        }
-    }
-//    
-//    init(track: any VideoTrack, isActive: Bool) {
-//        self.init(vm: ViewModel(track: track, trackState: isActive ? .program : .none))
-//        
-//    }
-}
-
 #Preview {
     HStack {
         TrackView(track: MockTrack(name: "Track 1", input: nil), handler: {})
         TrackView(track: MockTrack(name: "Track 2", input: MockDevice(name: "Test Device")), handler: {})
-//        TrackView(track: MockTrack(name: "Track 2", input: nil), isActive: true)
     }
     
 }

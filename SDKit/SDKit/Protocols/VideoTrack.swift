@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol VideoTrack: Identifiable {
+public protocol VideoTrack: Identifiable, Sendable {
     var name: String { get }
     var input: (any VideoDevice)? { get }
 }
