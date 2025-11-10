@@ -7,8 +7,11 @@
 
 import Foundation
 import WebRTC
+import OSLog
 
 private let defaultIceServers = ["stun:stun.l.google.com:19302"]
+
+fileprivate let logger = Logger.init(subsystem: "com.nickrobison.ShotSimKit.WebRTCClient", category: "shotSimKit.webrtc")
 
 protocol WebRTCClientDelegate: AnyObject {
     func webRTCClient(
@@ -110,7 +113,7 @@ final class WebRTCClient: NSObject {
         completion: @escaping (Error?) -> Void
     ) {
         if remoteSdp.type == .offer {
-            debugPrint("WebRTC received offer sdp")
+            logger.debug("WebRTC received offer sdp")
             //            self.signalingState = .haveRemoteOffer
             self.peerConnection.setRemoteDescription(remoteSdp) { error in
                 if error == nil {
@@ -119,7 +122,7 @@ final class WebRTCClient: NSObject {
                 completion(error)
             }
         } else if remoteSdp.type == .answer {
-            debugPrint("WebRTC received answer sdp")
+            logger.debug("WebRTC received answer sdp")
             self.peerConnection.setRemoteDescription(
                 remoteSdp,
                 completionHandler: completion
@@ -152,39 +155,39 @@ final class WebRTCClient: NSObject {
 
     public func listStreams() {
         self.peerConnection.statistics { (stats) in
-            debugPrint("I have stats: \(stats.description)")
+            logger.debug("I have stats: \(stats.description)")
             for stat in stats.statistics {
-                debugPrint("Stat: \(stat.value.type)")
+                logger.trace("Stat: \(stat.value.type)")
                 if stat.value.type == "peer-connection" {
-                    debugPrint("Peers: \(stat.value.values)")
+                    logger.trace("Peers: \(stat.value.values)")
                 }
                 if stat.value.type == "transport" {
-                    debugPrint("Transport: \(stat.value.values)")
+                    logger.trace("Transport: \(stat.value.values)")
                 }
                 if stat.value.type == "candidate-pair" {
-                    debugPrint("Pairs: \(stat.value.values)")
+                    logger.trace("Pairs: \(stat.value.values)")
                 }
             }
         }
 
         for rcvr in self.peerConnection.receivers {
-            debugPrint("Peer receiver: \(rcvr)")
+            logger.trace("Peer receiver: \(rcvr)")
             let tsend = rcvr.track as! RTCVideoTrack
-            debugPrint("Rcvr track: \(rcvr.track)")
-            debugPrint(
+            logger.trace("Rcvr track: \(String(describing: rcvr.track))")
+            logger.trace(
                 "Receiver state!!: \(tsend.readyState) -> \(tsend.source.state)"
             )
         }
 
-        debugPrint("Listing active streams?")
+        logger.trace("Listing active streams?")
         for txcvr in self.peerConnection.transceivers {
-            debugPrint(
+            logger.trace(
                 "Track: \(txcvr.description). Direction: \(txcvr.direction.stringValue)"
             )
-            debugPrint("MID: \(txcvr.mid)")
-            debugPrint("rec: \(txcvr.receiver)")
-            debugPrint("send: \(txcvr.sender)")
-            debugPrint("Track media type: \(txcvr.mediaType)")
+            logger.trace("MID: \(txcvr.mid)")
+            logger.trace("rec: \(txcvr.receiver)")
+            logger.trace("send: \(txcvr.sender)")
+            logger.trace("Track media type: \(txcvr.mediaType)")
             if txcvr.mediaType == .video {
                 let vtc = txcvr.receiver.track as! RTCVideoTrack
                 self.peerConnection.stats(
@@ -192,19 +195,19 @@ final class WebRTCClient: NSObject {
                     statsOutputLevel: .debug,
                     completionHandler: { (stats) -> Void in
                         for s in stats {
-                            debugPrint(
+                            logger.trace(
                                 "Steam id \(s.reportId). \(s.description). \(s.type)"
                             )
                             for v in s.values {
-                                debugPrint("Stream stat: \(v)")
+                                logger.trace("Stream stat: \(v.key) -> \(v.value)")
                             }
 
                         }
                     }
                 )
-                debugPrint("What's going on? \(vtc.trackId)")
-                debugPrint("Enabled? \(vtc.isEnabled)")
-                debugPrint("State: \(vtc.readyState) -> \(vtc.source.state)")
+                logger.trace("What's going on? \(vtc.trackId)")
+                logger.trace("Enabled? \(vtc.isEnabled)")
+                logger.trace("State: \(vtc.readyState) -> \(vtc.source.state)")
             }
 
             let tracks = self.peerConnection.transceivers.compactMap {
@@ -212,7 +215,7 @@ final class WebRTCClient: NSObject {
             }
 
             for t in tracks {
-                debugPrint("Transceiver track: \(t)")
+                logger.trace("Transceiver track: \(t)")
             }
 
             // Probably bad
@@ -220,7 +223,7 @@ final class WebRTCClient: NSObject {
                 self.peerConnection.transceivers.first {
                     $0.mediaType == .video
                 }?.receiver.track as? RTCVideoTrack
-            debugPrint("Did it work? \(self.remoteVideoTrack)")
+            logger.trace("Did it work? \(String(describing: self.remoteVideoTrack))")
 
         }
     }
@@ -229,7 +232,7 @@ final class WebRTCClient: NSObject {
         remoteCandidate: RTCIceCandidate,
         completion: @escaping (Error?) -> Void
     ) {
-        debugPrint("remoteSdp add remote candidate \(remoteCandidate)")
+        logger.debug("remoteSdp add remote candidate \(remoteCandidate)")
         if (self.signalingState == .stable || self.signalingState == .haveRemoteOffer) {
                     self.peerConnection.add(remoteCandidate, completionHandler: completion)
         } else {
@@ -248,7 +251,7 @@ final class WebRTCClient: NSObject {
             optionalConstraints: nil
         )
 
-        debugPrint("Offering: \(constraints)")
+        logger.debug("Offering: \(constraints)")
 
         self.peerConnection.offer(for: constraints) { (sdp, error) in
 
@@ -258,17 +261,15 @@ final class WebRTCClient: NSObject {
 
             }
 
-            debugPrint("Setting local description to \(sdp)")
+            logger.debug("Setting local description to \(sdp)")
 
             self.peerConnection.setLocalDescription(
                 sdp,
                 completionHandler: { error in
 
-                    debugPrint("Done setting local")
-
+                    logger.debug("Done setting local")
                     if let error {
-
-                        debugPrint("Hmm.... \(error) on set local description")
+                        logger.error("Hmm.... \(error) on set local description")
 
                     }
 
@@ -288,20 +289,20 @@ final class WebRTCClient: NSObject {
             mandatoryConstraints: self.mediaConstraints,
             optionalConstraints: nil
         )
-        debugPrint("Creating answer")
+        logger.debug("Creating answer")
         self.peerConnection.answer(for: constraints) { (sdp, error) in
             guard let sdp else {
                 return
             }
 
-            debugPrint("Setting local description to \(sdp)")
+            logger.trace("Setting local description to \(sdp)")
 
             self.peerConnection.setLocalDescription(
                 sdp,
                 completionHandler: { error in
-                    debugPrint("Done setting local")
+                    logger.trace("Done setting local")
                     if let error {
-                        debugPrint("Hmm.... \(error) on set local description")
+                        logger.error("Hmm.... \(error) on set local description")
                     }
                     completion(sdp)
                 }
@@ -315,7 +316,7 @@ final class WebRTCClient: NSObject {
             self.peerConnection.transceivers.first { $0.mediaType == .video }?
             .receiver.track as? RTCVideoTrack
 
-        debugPrint("Track? \(String(describing: self.remoteVideoTrack))")
+        logger.trace("Track? \(String(describing: self.remoteVideoTrack))")
 
         if let dataChannel = createDataChannel() {
             dataChannel.delegate = self
@@ -331,7 +332,7 @@ final class WebRTCClient: NSObject {
                 configuration: config
             )
         else {
-            debugPrint("Couldn't create data channel. Awesome")
+            logger.warning("Couldn't create data channel. Awesome")
             return nil
         }
         return dataChannel
@@ -344,7 +345,7 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
         _ peerConnection: RTCPeerConnection,
         didChange stateChanged: RTCSignalingState
     ) {
-        debugPrint(
+        logger.debug(
             "peerConnection new signaling state: \(stateChanged.stringValue) from \(self.signalingState.stringValue)"
         )
         self.signalingState = stateChanged
@@ -354,21 +355,21 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
         _ peerConnection: RTCPeerConnection,
         didAdd stream: RTCMediaStream
     ) {
-        debugPrint("peerConnection did add stream")
+        logger.debug("peerConnection did add stream")
     }
 
     public func peerConnection(
         _ peerConnection: RTCPeerConnection,
         didRemove stream: RTCMediaStream
     ) {
-        debugPrint("peerConnection did remove stream")
+        logger.debug("peerConnection did remove stream")
     }
 
     public func peerConnection(
         _ peerConnection: RTCPeerConnection,
         didChange newState: RTCIceConnectionState
     ) {
-        debugPrint(
+        logger.debug(
             "peerConnection new connection state: \(newState.stringValue)"
         )
         self.delegate?.webRTCClient(self, didChangeConnectionState: newState)
@@ -378,11 +379,11 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
         _ peerConnection: RTCPeerConnection,
         didStartReceivingOn transceiver: RTCRtpTransceiver
     ) {
-        debugPrint("WebRTCClient: didStartReceivingOn")
+        logger.debug("WebRTCClient: didStartReceivingOn")
         if transceiver.mediaType == .video {
             guard let track = transceiver.receiver.track as? RTCVideoTrack
             else {
-                debugPrint("Cannot get video track")
+                logger.error("Cannot get video track")
                 return
             }
             self.delegate?.webRTCClient(self, didReceive: track)
@@ -393,16 +394,16 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
         _ peerConnection: RTCPeerConnection,
         didChange newState: RTCIceGatheringState
     ) {
-        debugPrint("peerConnection new gathering state: \(newState.stringValue)")
+        logger.debug("peerConnection new gathering state: \(newState.stringValue)")
     }
 
     public func peerConnection(
         _ peerConnection: RTCPeerConnection,
         didGenerate candidate: RTCIceCandidate
     ) {
-        debugPrint("peerConnection new ice candidate: \(candidate)")
+        logger.debug("peerConnection new ice candidate: \(candidate)")
         if self.signalingState == .closed {
-            debugPrint("Acknowledge new candidate")
+            logger.debug("Acknowledge new candidate")
             self.delegate?.webRTCClient(
                 self,
                 didDiscoverLocalCandidate: candidate
@@ -415,21 +416,21 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
         _ peerConnection: RTCPeerConnection,
         didRemove candidates: [RTCIceCandidate]
     ) {
-        debugPrint("peerConnection did remove candidate(s)")
+        logger.debug("peerConnection did remove candidate(s)")
     }
 
     public func peerConnection(
         _ peerConnection: RTCPeerConnection,
         didOpen dataChannel: RTCDataChannel
     ) {
-        debugPrint("peerConnection did open data channel")
+        logger.debug("peerConnection did open data channel")
         self.remoteDataChannel = dataChannel
     }
 
     public func peerConnectionShouldNegotiate(
         _ peerConnection: RTCPeerConnection
     ) {
-        debugPrint(
+        logger.debug(
             "peerConnection should negotiate in state: \(self.signalingState.stringValue)"
         )
         //        if self.signalingState == .stable {
@@ -461,14 +462,14 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
 
 extension WebRTCClient: RTCDataChannelDelegate {
     func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
-        debugPrint("dataChannel did change state: \(dataChannel.label)")
+        logger.debug("dataChannel did change state: \(dataChannel.label)")
     }
 
     func dataChannel(
         _ dataChannel: RTCDataChannel,
         didReceiveMessageWith buffer: RTCDataBuffer
     ) {
-        debugPrint("dataChannel did receive data")
+        logger.debug("dataChannel did receive data")
     }
 }
 
@@ -485,7 +486,7 @@ extension WebRTCClient {
     }
 
     func startVideo() {
-        debugPrint(
+        logger.debug(
             "Remote desc: \(String(describing: self.peerConnection.remoteDescription))"
         )
         self.setVideoEnabled(true)

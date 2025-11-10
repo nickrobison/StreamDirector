@@ -7,6 +7,9 @@
 
 import SwiftUI
 import WebRTC
+import OSLog
+
+fileprivate let logger = Logger.init(subsystem: "com.nickrobison.ShotSimKit.WebRTCVideoView", category: "ShotSimKit.view")
 
 #if os(iOS)
 typealias ViewRepresentable = UIViewRepresentable
@@ -29,14 +32,14 @@ public struct WebRTCVideoView: ViewRepresentable {
     public func makeUIView(context: Context) -> RTCMTLVideoView {
         let view = RTCMTLVideoView(frame: .zero)
         view.videoContentMode = .scaleAspectFill
-        debugPrint("What track? \(self.videoTrack)")
+        logger.debug("What track? \(self.videoTrack)")
         videoTrack.add(view)
         context.coordinator.videoTrack = videoTrack
         return view
     }
     
     public func updateUIView(_ uiView: RTCMTLVideoView, context: Context) {
-        debugPrint("View did update")
+        logger.debug("View did update")
         context.coordinator.videoTrack?.remove(uiView)
         videoTrack.add(uiView)
         context.coordinator.videoTrack = videoTrack

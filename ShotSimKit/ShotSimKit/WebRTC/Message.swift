@@ -24,7 +24,6 @@ extension Message: DecodableWithConfiguration {
         case String("candidate"):
             self = .candidate(try container.decode(IceCandidate.self, forKey: .data))
         default:
-            debugPrint("What is this type: \(type)")
             throw DecodeError.unknownType
         }
     }

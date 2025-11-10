@@ -8,6 +8,9 @@
 import Foundation
 import WebRTC
 import Combine
+import OSLog
+
+fileprivate let logger = Logger.init(subsystem: "com.nickrobison.ShotSimKit", category: "")
 
 // TODO: Observable macro
 public class CameraViewController: ObservableObject {
@@ -45,7 +48,7 @@ public class CameraViewController: ObservableObject {
 
 extension CameraViewController: SignalClientDelegate {
     func signalClientDidConnect(_ signalClient: SignalingClient) {
-        debugPrint("I'm connected!")
+        logger.info("Signaling client connected")
         DispatchQueue.main.async {
             self.isConnected = true
             self.webRTCClient.offer { session in
@@ -61,9 +64,9 @@ extension CameraViewController: SignalClientDelegate {
     }
     
     func signalClient(_ signalClient: SignalingClient, didReceiveRemoteSdp sdp: RTCSessionDescription) {
-        debugPrint("Received remote sdp: \(sdp.sdp)")
+        logger.debug("Received remote sdp: \(sdp.sdp)")
         self.webRTCClient.set(remoteSdp: sdp) { (error) in
-            debugPrint("signalClient did received sdp: \(String(describing: error))")
+            logger.debug("signalClient did received sdp: \(String(describing: error))")
             DispatchQueue.main.async {
                 self.hasRemoteSdp = true
                 self.webRTCClient.setupConnection()
@@ -76,12 +79,12 @@ extension CameraViewController: SignalClientDelegate {
     }
     
     func signalClient(_ signalClient: SignalingClient, didReceiveCandidate candidate: RTCIceCandidate) {
-        debugPrint("I have a remote candidate, I think?")
+        logger.debug("I have a remote candidate, I think?")
         self.webRTCClient.set(remoteCandidate: candidate) { error in
-            debugPrint("Ok, remote set. Now what?. erro: \(error)")
+            logger.debug("Ok, remote set. Now what?. erro: \(error)")
             // Do the offer
             self.webRTCClient.offer { session in
-                debugPrint("Here's my offer: \(session)")
+                logger.debug("Here's my offer: \(session)")
                 self.signalClient.send(sdp: session, type: "offer")
             }
         }
@@ -92,17 +95,17 @@ extension CameraViewController: SignalClientDelegate {
 extension CameraViewController: WebRTCClientDelegate {
 
     func webRTCClient(_ client: WebRTCClient, didDiscoverLocalCandidate candidate: RTCIceCandidate) {
-        debugPrint("discovered local candidate: \(candidate)")
+        logger.debug("discovered local candidate: \(candidate)")
         self.signalClient.send(candidate: candidate)
     }
     
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState) {
-        debugPrint("WebRTCDelegate state changed: \(state.stringValue)")
+        logger.debug("WebRTCDelegate state changed: \(state.stringValue)")
     }
     
     func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data) {
         let message = String(data: data, encoding: .utf8) ?? "(Binary: \(data.count) bytes"
-        debugPrint("Received data: \(message)")
+        logger.debug("Received data: \(message)")
     }
     
     func webRTCClient(_ client: WebRTCClient, didReceive track: RTCVideoTrack) {

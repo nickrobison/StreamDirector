@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import OSLog
+
+fileprivate let logger = Logger.init(subsystem: "com.nickrobison.ShotSimKit.NativeWebSocket", category: "ShotSimKit.webrtc")
 
 class NativeWebSocket: NSObject, WebSocketProvider {
     
@@ -20,7 +23,7 @@ class NativeWebSocket: NSObject, WebSocketProvider {
     }
     
     public func connect() {
-        debugPrint("Let's connect to \(url), maybe?")
+        logger.info("Let's connect to \(self.url), maybe?")
         let socket = urlSession.webSocketTask(with: url)
         socket.resume()
         self.socket = socket
@@ -30,7 +33,7 @@ class NativeWebSocket: NSObject, WebSocketProvider {
     public func send(data: Data) {
         self.socket?.send(.data(data)) { error in
             if let error {
-                debugPrint("Error when sending: \(error)")
+                logger.error("Error when sending: \(error)")
             }
         }
     }
@@ -46,11 +49,11 @@ class NativeWebSocket: NSObject, WebSocketProvider {
             case .success(.string(let msgString)):
                 self.delegate?.webSocket(self, didReceiveMessage: msgString)
                 self.readMessage()
-            case .success:
-                debugPrint("Should have received something intersting, but got \(message).")
             case .failure(let failure):
-                debugPrint("I'm a failure: \(failure)")
+                logger.error("I'm a failure: \(failure)")
                 self.disconnect()
+            case .success(_):
+                logger.warning("Recieved unhandled success case")
             }
         }
     }
