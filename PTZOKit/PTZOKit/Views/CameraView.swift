@@ -27,6 +27,7 @@ struct CameraView: View {
 
 extension CameraView {
     @Observable
+    @MainActor
     class ViewModel {
         var name: String
         var selectedPreset: CameraPreset?

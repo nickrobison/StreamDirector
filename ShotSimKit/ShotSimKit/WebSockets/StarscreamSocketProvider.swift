@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Starscream
+internal import Starscream
 
 class StarscreamWebSocket: WebSocketProvider {
     var delegate: WebSocketProviderDelegate?
