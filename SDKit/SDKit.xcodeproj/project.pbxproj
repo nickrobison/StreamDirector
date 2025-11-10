@@ -23,7 +23,6 @@
 /* Begin PBXFileReference section */
 		EB369CB72E66494F00834E5E /* SDKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB369CC02E66494F00834E5E /* SDKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB369CDA2E664ADE00834E5E /* SDMacros */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SDMacros; path = ../SDMacros; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -61,7 +60,6 @@
 		EB369CAD2E66494F00834E5E = {
 			isa = PBXGroup;
 			children = (
-				EB369CDA2E664ADE00834E5E /* SDMacros */,
 				EB369CB92E66494F00834E5E /* SDKit */,
 				EB369CC42E66494F00834E5E /* SDKitTests */,
 				EB369CB82E66494F00834E5E /* Products */,

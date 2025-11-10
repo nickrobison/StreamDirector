@@ -10,7 +10,6 @@
 		EB369C822E6644BF00834E5E /* ShotSimKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB369C782E6644BF00834E5E /* ShotSimKit.framework */; };
 		EB369CDD2E66A22600834E5E /* SDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB369CDC2E66A22600834E5E /* SDKit.framework */; };
 		EB369CDE2E66A22600834E5E /* SDKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB369CDC2E66A22600834E5E /* SDKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EB369CE32E66A40E00834E5E /* SDMacros in Frameworks */ = {isa = PBXBuildFile; productRef = EB369CE22E66A40E00834E5E /* SDMacros */; };
 		EB6473012EAEE7BC00984CB6 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = EB6473002EAEE7BC00984CB6 /* Starscream */; };
 		EBD66D682EB06EBF00BD34E6 /* WebRTC in Frameworks */ = {isa = PBXBuildFile; productRef = EBD66D672EB06EBF00BD34E6 /* WebRTC */; };
 /* End PBXBuildFile section */
@@ -68,7 +67,6 @@
 			files = (
 				EB369CDD2E66A22600834E5E /* SDKit.framework in Frameworks */,
 				EBD66D682EB06EBF00BD34E6 /* WebRTC in Frameworks */,
-				EB369CE32E66A40E00834E5E /* SDMacros in Frameworks */,
 				EB6473012EAEE7BC00984CB6 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,7 +144,6 @@
 			);
 			name = ShotSimKit;
 			packageProductDependencies = (
-				EB369CE22E66A40E00834E5E /* SDMacros */,
 				EB6473002EAEE7BC00984CB6 /* Starscream */,
 				EBD66D672EB06EBF00BD34E6 /* WebRTC */,
 			);
@@ -558,10 +555,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		EB369CE22E66A40E00834E5E /* SDMacros */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SDMacros;
-		};
 		EB6473002EAEE7BC00984CB6 /* Starscream */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB6472FF2EAEE7BC00984CB6 /* XCRemoteSwiftPackageReference "Starscream" */;

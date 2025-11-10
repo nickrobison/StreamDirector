@@ -7,10 +7,8 @@
 import Foundation
 import WebRTC
 import SDKit
-// FIXME: Ok, this is nonsense.
-import SDMacros
 
-fileprivate let signalingServerUrl = Foundation.URL(string: "ws://localhost")!
+fileprivate let signalingServerUrl = URL(string: "ws://localhost")!
 
 protocol SignalClientDelegate: AnyObject {
     func signalClientDidConnect(_ signalClient: SignalingClient)
