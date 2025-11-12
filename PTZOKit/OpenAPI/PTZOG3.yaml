@@ -1,0 +1,21 @@
+openapi: '3.1.0'
+info:
+  title: PTZOptics Move G3 HTTP API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8087
+    description: Local dev server
+paths:
+  /cgi-bin/ptzctrl.cgi?ptzcmd&poscall:
+    get:
+      operationId: presetCall
+      summary: Call Preset
+      parameters:
+        - in: query
+          name: presetNumber
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Command received
