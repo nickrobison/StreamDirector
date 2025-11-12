@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C69E59752EC5046B00A20C30 /* Prefire in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59742EC5046B00A20C30 /* Prefire */; };
+		C69E597A2EC504C600A20C30 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59792EC504C600A20C30 /* SnapshotTesting */; };
 		EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB72172F2EC1419700E972F9 /* PTZOKit.framework */; };
 		EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */; };
 		EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAE2EC44442002A16F3 /* OpenAPIURLSession */; };
@@ -50,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C69E59752EC5046B00A20C30 /* Prefire in Frameworks */,
 				EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */,
 				EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */,
 			);
@@ -60,18 +63,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */,
+				C69E597A2EC504C600A20C30 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C69E59732EC5046B00A20C30 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EB7217252EC1419700E972F9 = {
 			isa = PBXGroup;
 			children = (
 				EB9B9D962EC43F98002A16F3 /* OpenAPI */,
 				EB7217312EC1419700E972F9 /* PTZOKit */,
 				EB72173C2EC1419700E972F9 /* PTZOKitTests */,
+				C69E59732EC5046B00A20C30 /* Frameworks */,
 				EB7217302EC1419700E972F9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,6 +132,7 @@
 			packageProductDependencies = (
 				EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */,
 				EB9B9DAE2EC44442002A16F3 /* OpenAPIURLSession */,
+				C69E59742EC5046B00A20C30 /* Prefire */,
 			);
 			productName = PTZOKit;
 			productReference = EB72172F2EC1419700E972F9 /* PTZOKit.framework */;
@@ -136,6 +149,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C69E59702EC503CE00A20C30 /* PBXTargetDependency */,
 				EB72173B2EC1419700E972F9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
@@ -143,6 +157,7 @@
 			);
 			name = PTZOKitTests;
 			packageProductDependencies = (
+				C69E59792EC504C600A20C30 /* SnapshotTesting */,
 			);
 			productName = PTZOKitTests;
 			productReference = EB7217382EC1419700E972F9 /* PTZOKitTests.xctest */;
@@ -179,6 +194,8 @@
 				EB9B9DAA2EC44423002A16F3 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
 				EB9B9DAD2EC44442002A16F3 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
 				EB9B9DB02EC44463002A16F3 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
+				C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */,
+				C69E59782EC504C600A20C30 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB7217302EC1419700E972F9 /* Products */;
@@ -226,6 +243,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C69E59702EC503CE00A20C30 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C69E596F2EC503CE00A20C30 /* PrefireTestsPlugin */;
+		};
 		EB72173B2EC1419700E972F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = EB72172E2EC1419700E972F9 /* PTZOKit */;
@@ -498,6 +519,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BarredEwe/Prefire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+		C69E59782EC504C600A20C30 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.18.7;
+			};
+		};
 		EB9B9DAA2EC44423002A16F3 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-openapi-runtime";
@@ -525,6 +562,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C69E596F2EC503CE00A20C30 /* PrefireTestsPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */;
+			productName = "plugin:PrefireTestsPlugin";
+		};
+		C69E59742EC5046B00A20C30 /* Prefire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */;
+			productName = Prefire;
+		};
+		C69E59792EC504C600A20C30 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C69E59782EC504C600A20C30 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
 		EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB9B9DAA2EC44423002A16F3 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */;

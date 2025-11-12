@@ -7,6 +7,7 @@
 
 import SDKit
 import SwiftUI
+internal import Prefire
 
 struct SwitcherView: View {
     let vm: ViewModel
@@ -66,13 +67,14 @@ extension SwitcherView {
     }
 }
 
-#Preview {
-    let tracks: [MockTrack] = [
+struct SwitcherView_Preview: PreviewProvider, PrefireProvider {
+    static let tracks = [
         MockTrack(name: "Track 1", input: nil),
         MockTrack(name: "Track 2", input: MockDevice(name: "Camera 1")),
         MockTrack(name: "Track 3", input: nil),
     ]
-    SwitcherView(
+    
+    static let previews: some View = SwitcherView(
         vm: SwitcherView.ViewModel(
             ATEMSwitcher(preview: tracks[0], program: tracks[1], tracks: tracks)
         )

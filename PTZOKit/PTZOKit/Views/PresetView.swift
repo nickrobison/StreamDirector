@@ -39,11 +39,10 @@ struct PresetView: View {
 }
 
 #Preview {
-    let preset = CameraPreset(name: "Home", value: .presetID("1"))
     VStack {
-        PresetView(preset, false){ pv in
+        PresetView(CameraPreset(name: "Home", value: .presetID("1")), false){ pv in
         }
-        PresetView(preset, true) { pv in
+        PresetView(CameraPreset(name: "Home", value: .presetID("1")), true) { pv in
         }
     }
     

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+internal import Prefire
 
 struct CameraView: View {
     let vm: ViewModel
@@ -48,12 +49,15 @@ extension CameraView {
     }
 }
 
-#Preview {
-    let presets = [
+struct CameraView_Previews: PreviewProvider, PrefireProvider {
+    
+    static let presets = [
         CameraPreset(name: "Home", value: .presetID("1")),
         CameraPreset(name: "Lectern", value: .presetID("2")),
         CameraPreset(name: "Alter", value: .presetID("3")),
         CameraPreset(name: "Entry", value: .presetID("4"))
     ]
-    CameraView(vm: CameraView.ViewModel(name: "Camera 1", presets: presets))
+    
+    static var previews = CameraView(vm: CameraView.ViewModel(name: "Camera 1", presets: presets))
+    
 }
