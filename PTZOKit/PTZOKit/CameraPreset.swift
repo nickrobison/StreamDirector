@@ -20,6 +20,4 @@ extension CameraPreset: Identifiable {
     var id: String {
         self.name
     }
-    
-    
 }

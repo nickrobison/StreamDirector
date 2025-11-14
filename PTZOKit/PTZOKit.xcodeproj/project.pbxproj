@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C68783102EC7A2ED00018E28 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C687830F2EC7A2ED00018E28 /* Combine.framework */; };
+		C68783A82EC7BE4700018E28 /* Mocking in Frameworks */ = {isa = PBXBuildFile; productRef = C68783A72EC7BE4700018E28 /* Mocking */; };
 		C69E59752EC5046B00A20C30 /* Prefire in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59742EC5046B00A20C30 /* Prefire */; };
 		C69E597A2EC504C600A20C30 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59792EC504C600A20C30 /* SnapshotTesting */; };
 		EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB72172F2EC1419700E972F9 /* PTZOKit.framework */; };
@@ -25,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C687830F2EC7A2ED00018E28 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.1.sdk/System/Library/Frameworks/Combine.framework; sourceTree = DEVELOPER_DIR; };
 		EB72172F2EC1419700E972F9 /* PTZOKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PTZOKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7217382EC1419700E972F9 /* PTZOKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PTZOKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -54,6 +57,8 @@
 			files = (
 				C69E59752EC5046B00A20C30 /* Prefire in Frameworks */,
 				EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */,
+				C68783A82EC7BE4700018E28 /* Mocking in Frameworks */,
+				C68783102EC7A2ED00018E28 /* Combine.framework in Frameworks */,
 				EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,6 +78,7 @@
 		C69E59732EC5046B00A20C30 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C687830F2EC7A2ED00018E28 /* Combine.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -133,6 +139,7 @@
 				EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */,
 				EB9B9DAE2EC44442002A16F3 /* OpenAPIURLSession */,
 				C69E59742EC5046B00A20C30 /* Prefire */,
+				C68783A72EC7BE4700018E28 /* Mocking */,
 			);
 			productName = PTZOKit;
 			productReference = EB72172F2EC1419700E972F9 /* PTZOKit.framework */;
@@ -196,6 +203,7 @@
 				EB9B9DB02EC44463002A16F3 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
 				C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */,
 				C69E59782EC504C600A20C30 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				C68783A62EC7BE4700018E28 /* XCRemoteSwiftPackageReference "swift-mocking" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB7217302EC1419700E972F9 /* Products */;
@@ -519,6 +527,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C68783A62EC7BE4700018E28 /* XCRemoteSwiftPackageReference "swift-mocking" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fetch-rewards/swift-mocking.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
 		C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BarredEwe/Prefire.git";
@@ -562,6 +578,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C68783A72EC7BE4700018E28 /* Mocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C68783A62EC7BE4700018E28 /* XCRemoteSwiftPackageReference "swift-mocking" */;
+			productName = Mocking;
+		};
 		C69E596F2EC503CE00A20C30 /* PrefireTestsPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */;
