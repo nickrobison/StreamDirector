@@ -7,30 +7,63 @@
 
 import Foundation
 import OSLog
-@preconcurrency import Combine
+import Synchronization
 
-enum ConnectionStatus {
-    case connected
-    case disconnected
-    case connecting
-}
-
-enum CommandStatus {
-    case idle
-    case executing
-    case failed(message: String)
-}
-
-actor PTZOCamera<C: APIProtocol> {
-    
-    private let statusPublisher: CurrentValueSubject<ConnectionStatus, Never> = .init(.disconnected)
-    private let commandStatusPublisher: CurrentValueSubject<CommandStatus, Never> = .init(.idle)
+@Observable
+class PTZOCamera<C: APIProtocol> {
 
     private let logger: Logger
     private let client: C
     
-    nonisolated let commandStatus: AnyPublisher<CommandStatus, Never>
-    nonisolated let connectionStatus: AnyPublisher<ConnectionStatus, Never>
+    private let state: Mutex<CameraState>
+    
+    var commandStatus: CommandStatus {
+        get {
+            self.access(keyPath: \.commandStatus)
+            return state.withLock { state in
+                state.commandStatus
+            }
+        }
+        set {
+            self.withMutation(keyPath: \.commandStatus) {
+                state.withLock { state in
+                    state.commandStatus = newValue
+                }
+            }
+        }
+    }
+    
+    var connectionStatus: ConnectionState {
+        get {
+            self.access(keyPath: \.connectionStatus)
+            return state.withLock { state in
+                state.connectionStatus
+            }
+        }
+        set {
+            self.withMutation(keyPath: \.connectionStatus) {
+                state.withLock { state in
+                    state.connectionStatus = newValue
+                }
+            }
+        }
+    }
+    
+    var currentPreset: CameraPreset? {
+        get {
+            self.access(keyPath: \.currentPreset)
+            return state.withLock { state in
+                state.activePreset
+            }
+        }
+        set {
+            self.withMutation(keyPath: \.currentPreset) {
+                state.withLock { state in
+                    state.activePreset = newValue
+                }
+            }
+        }
+    }
 
     init(name: String, client: C) {
         self.logger = Logger.init(
@@ -40,32 +73,30 @@ actor PTZOCamera<C: APIProtocol> {
         )
         self.client = client
         self.logger.info("Connecting to camera")
-        self.connectionStatus = statusPublisher.eraseToAnyPublisher()
-        self.commandStatus = commandStatusPublisher.eraseToAnyPublisher()
-        Task {
-            await connect()
-        }
+        self.state = Mutex(CameraState.init())
     }
     
     func callPreset(_ preset: Int) async {
         let _ = await executeCameraCommand {
             try await self.client.presetCall(query: .init(presetNumber: preset))
         }
+        self.currentPreset = CameraPreset(name: "<none>", value: PresetValue.presetID(String(preset)))
+        
     }
 
-    private func connect() async {
-        statusPublisher.send(.connecting)
-        statusPublisher.send(.connected)
+    func connect() async throws {
+        self.connectionStatus = .connected
     }
     
     private func executeCameraCommand<T>(_ command: @escaping () async throws -> T) async -> T? {
         logger.info("Executing camera command")
-        commandStatusPublisher.send(.executing)
+        self.commandStatus = .executing
         do {
+            defer { self.commandStatus = .idle}
             return try await command()
         } catch let error {
             logger.error("Command execution failed: \(error.localizedDescription)")
-            commandStatusPublisher.send(.failed(message: error.localizedDescription))
+            self.commandStatus = .failed(message: error.localizedDescription)
             return nil
         }
     }

@@ -1,0 +1,16 @@
+//
+//  CameraState.swift
+//  PTZOKit
+//
+//  Created by Nick Robison on 11/16/25.
+//
+
+import Foundation
+import Spatial
+
+struct CameraState {
+    var connectionStatus: ConnectionState = .disconnected
+    var commandStatus: CommandStatus = .idle
+    var orientation: Point3D = Point3D.zero
+    var activePreset: CameraPreset? = nil
+}
