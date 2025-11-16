@@ -11,6 +11,7 @@
 		C68783A82EC7BE4700018E28 /* Mocking in Frameworks */ = {isa = PBXBuildFile; productRef = C68783A72EC7BE4700018E28 /* Mocking */; };
 		C69E59752EC5046B00A20C30 /* Prefire in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59742EC5046B00A20C30 /* Prefire */; };
 		C69E597A2EC504C600A20C30 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59792EC504C600A20C30 /* SnapshotTesting */; };
+		EB20A02F2ECA8A0D00A083CB /* ConcurrencyExtras in Frameworks */ = {isa = PBXBuildFile; productRef = EB20A02E2ECA8A0D00A083CB /* ConcurrencyExtras */; };
 		EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB72172F2EC1419700E972F9 /* PTZOKit.framework */; };
 		EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */; };
 		EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAE2EC44442002A16F3 /* OpenAPIURLSession */; };
@@ -68,6 +69,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */,
+				EB20A02F2ECA8A0D00A083CB /* ConcurrencyExtras in Frameworks */,
 				C69E597A2EC504C600A20C30 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,6 +167,7 @@
 			name = PTZOKitTests;
 			packageProductDependencies = (
 				C69E59792EC504C600A20C30 /* SnapshotTesting */,
+				EB20A02E2ECA8A0D00A083CB /* ConcurrencyExtras */,
 			);
 			productName = PTZOKitTests;
 			productReference = EB7217382EC1419700E972F9 /* PTZOKitTests.xctest */;
@@ -204,6 +207,7 @@
 				C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */,
 				C69E59782EC504C600A20C30 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				C68783A62EC7BE4700018E28 /* XCRemoteSwiftPackageReference "swift-mocking" */,
+				EB20A02D2ECA8A0D00A083CB /* XCRemoteSwiftPackageReference "swift-concurrency-extras" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB7217302EC1419700E972F9 /* Products */;
@@ -551,6 +555,14 @@
 				minimumVersion = 1.18.7;
 			};
 		};
+		EB20A02D2ECA8A0D00A083CB /* XCRemoteSwiftPackageReference "swift-concurrency-extras" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-concurrency-extras.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.2;
+			};
+		};
 		EB9B9DAA2EC44423002A16F3 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-openapi-runtime";
@@ -597,6 +609,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C69E59782EC504C600A20C30 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
+		};
+		EB20A02E2ECA8A0D00A083CB /* ConcurrencyExtras */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB20A02D2ECA8A0D00A083CB /* XCRemoteSwiftPackageReference "swift-concurrency-extras" */;
+			productName = ConcurrencyExtras;
 		};
 		EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */ = {
 			isa = XCSwiftPackageProductDependency;

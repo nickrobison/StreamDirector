@@ -10,7 +10,7 @@ import OSLog
 import Synchronization
 
 @Observable
-class PTZOCamera<C: APIProtocol> {
+class PTZOCamera<C: APIProtocol>: @unchecked Sendable {
 
     private let logger: Logger
     private let client: C
@@ -85,6 +85,8 @@ class PTZOCamera<C: APIProtocol> {
     }
 
     func connect() async throws {
+        self.connectionStatus = .connecting
+        await Task.yield()
         self.connectionStatus = .connected
     }
     
