@@ -12,7 +12,7 @@ import SDKit
 import Clocks
 
 @Observable
-final class PTZOCamera<C: APIProtocol>: CommandHandler, Sendable {
+final class PTZOCamera<C: APIProtocol>: AbstractCommandHandler, Sendable {
 
     private let client: C
     

@@ -26,31 +26,55 @@ private actor HandlerState {
     }
 }
 
-private class HappyHandler: CommandHandler {
+@Observable
+private final class HappyHandler: CommandHandler {
+    
+    let _connectionState: State<ConnectionState>
+    
+    var connectionState: ConnectionState {
+        get {
+            self.access(keyPath: \.connectionState)
+            return _connectionState.data
+        }
+        set {
+            self.withMutation(keyPath: \.connectionState) {
+                _connectionState.data = newValue
+            }
+        }
+    }
+    
+    let clock: any Clock<Duration>
+    
+    @ObservationIgnored
+    var healthTask: Task<Void, any Error>?
+    
+    let logger: Logger
+    
 
     let state: HandlerState
 
-    override func doConnect() async -> Result<(), any Error> {
+    func doConnect() async -> Result<(), any Error> {
         await Task.yield()
         return .success(())
     }
 
-    override func doHealthCheck() async -> Result<(), any Error> {
+    func doHealthCheck() async -> Result<(), any Error> {
         await state.incHealthCount()
         return .success(())
     }
 
     init(_ clock: any Clock<Duration>, state: HandlerState = HandlerState()) {
         self.state = state
-        super.init(
-            logger: testLogger,
-            config: CommandHandlerConfig(),
-            clock: clock
-        )
+        self.clock = clock
+        self.logger = testLogger
+        self._connectionState = .init(.disconnected)
+        Task {
+            await connect(config: CommandHandlerConfig())
+        }
     }
 }
 
-private class FailingConnectionHandler: CommandHandler {
+private class FailingConnectionHandler: AbstractCommandHandler {
     enum TestError: Error {
         case connectionFailed
     }
@@ -69,7 +93,7 @@ private class FailingConnectionHandler: CommandHandler {
     }
 }
 
-private class FailingHealthCheckHandler: CommandHandler {
+private class FailingHealthCheckHandler: AbstractCommandHandler {
     enum TestError: Error {
         case healthCheckFailed
     }
@@ -93,7 +117,7 @@ private class FailingHealthCheckHandler: CommandHandler {
     }
 }
 
-private class FlakyHealthCheckHandler: CommandHandler {
+private class FlakyHealthCheckHandler: AbstractCommandHandler {
     enum TestError: Error {
         case healthCheckFailed
     }
@@ -130,7 +154,7 @@ struct CommandHandlerTests {
 
     @Test
     func testConnection() async throws {
-        try await withMainSerialExecutor {
+        await withMainSerialExecutor {
             let handler = HappyHandler(clock)
             #expect(handler.connectionState == .disconnected)
             await Task.yield()
@@ -142,7 +166,7 @@ struct CommandHandlerTests {
 
     @Test
     func testConnectionFailure() async throws {
-        try await withMainSerialExecutor {
+        await withMainSerialExecutor {
             let handler = FailingConnectionHandler(clock)
             #expect(handler.connectionState == .disconnected)
             await Task.yield()
@@ -150,7 +174,7 @@ struct CommandHandlerTests {
             await waitForChanges(to: \.connectionState, on: handler)
             guard case .failed = handler.connectionState else {
                 #expect(
-                    false,
+                    Bool(false),
                     "Expected failed state. But got \(handler.connectionState)"
                 )
                 return
@@ -160,7 +184,7 @@ struct CommandHandlerTests {
 
     @Test
     func testHealthCheck() async throws {
-        try await withMainSerialExecutor {
+        await withMainSerialExecutor {
             let handler = HappyHandler(clock)
             await waitForConnected(handler)
             await clock.advance(by: .seconds(2))
@@ -222,12 +246,19 @@ struct CommandHandlerTests {
         #expect(count == 2)
     }
 
-    private func waitForConnected(_ handler: CommandHandler) async {
+    private func waitForConnected(_ handler: AbstractCommandHandler) async {
         var changes = 0
         // We expect 2 changes: disconnected -> connecting -> connected
         while handler.connectionState != .connected && changes < 2 {
             await waitForChanges(to: \.connectionState, on: handler)
             changes += 1
+        }
+    }
+    
+    private func waitForConnected(_ handler: HappyHandler) async {
+        // We expect 2 changes: disconnected -> connecting -> connected
+        while handler.connectionState != .connected {
+            await waitForChanges(to: \.connectionState, on: handler)
         }
     }
 }
