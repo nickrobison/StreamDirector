@@ -6,6 +6,14 @@
 //
 import OSLog
 
+/// An observable class that manages the connection and health status of a device.
+///
+/// This class provides a base implementation for connecting to a device, performing health checks,
+/// and managing the connection state. It is designed to be subclassed, with the subclass providing
+/// the specific implementation for the `doConnect()` and `doHealthCheck()` methods.
+///
+/// The `CommandHandler` automatically attempts to connect when initialized and, upon a successful connection,
+/// starts a periodic health check. The connection state is published via the `connectionState` property.
 @Observable
 open class CommandHandler: Connectable {
     // TODO: Really?
@@ -50,6 +58,11 @@ open class CommandHandler: Connectable {
             await connect()
         }
     }
+    
+    deinit {
+        healthTask?.cancel()
+        healthTask = nil
+    }
 
     private func connect() async {
         self.logger.info("Attempting to connect to device")
@@ -70,16 +83,17 @@ open class CommandHandler: Connectable {
     }
     
     private func registerHealthCheck() {
-        // TODO: Fix this warning. How?
         self.logger.info("Registering health check with interval of \(self.config.healthCheckInterval)")
-        self.healthTask = Task {
-            while true {
-                try await self.clock.sleep(for: self.config.healthCheckInterval)
+        self.healthTask = Task { [weak self] in
+            guard let self = self else { return }
+            while !Task.isCancelled {
+                try? await self.clock.sleep(for: self.config.healthCheckInterval)
+                if Task.isCancelled { return }
                 self.logger.info("Performing healthcheck")
                 let result = await self.doHealthCheck()
                 switch result {
                 case .success():
-                    // TODO: Should we check before setting?
+                    self.logger.info("Health check passed")
                     self.connectionState = .connected
                 case .failure(let err):
                     // TODO: Add error handling here
