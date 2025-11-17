@@ -9,22 +9,22 @@ import OSLog
 @Observable
 open class CommandHandler: Connectable {
     // TODO: Really?
-    public func doConnect() async -> Result<(), any Error> {
+    open func doConnect() async -> Result<(), any Error> {
         fatalError("unimplemented. Please override")
     }
     
-    public func doHealthCheck() async -> Result<(), any Error> {
+    open func doHealthCheck() async -> Result<(), any Error> {
         fatalError("unimplemented. Please override")
     }
     
-    private let logger: Logger
+    public let logger: Logger
 
     private let _connectionState: State<ConnectionState>
     private let clock: any Clock<Duration>
     private let config: CommandHandlerConfig
     private var healthTask: Task<Void, Error>?
 
-    var connectionState: ConnectionState {
+    public var connectionState: ConnectionState {
         get {
             self.access(keyPath: \.connectionState)
             return self._connectionState.data
@@ -36,7 +36,7 @@ open class CommandHandler: Connectable {
         }
     }
 
-    init(
+    public init(
         logger: Logger,
         config: CommandHandlerConfig,
         connectionState: ConnectionState = .disconnected,

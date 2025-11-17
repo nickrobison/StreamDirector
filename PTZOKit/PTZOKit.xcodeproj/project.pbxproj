@@ -14,6 +14,7 @@
 		EB20A02F2ECA8A0D00A083CB /* ConcurrencyExtras in Frameworks */ = {isa = PBXBuildFile; productRef = EB20A02E2ECA8A0D00A083CB /* ConcurrencyExtras */; };
 		EB20A0402ECADC5200A083CB /* SDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB20A03F2ECADC5200A083CB /* SDKit.framework */; };
 		EB20A0412ECADC5200A083CB /* SDKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB20A03F2ECADC5200A083CB /* SDKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EB20A0AF2ECAF80F00A083CB /* Clocks in Frameworks */ = {isa = PBXBuildFile; productRef = EB20A0AE2ECAF80F00A083CB /* Clocks */; };
 		EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB72172F2EC1419700E972F9 /* PTZOKit.framework */; };
 		EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */; };
 		EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAE2EC44442002A16F3 /* OpenAPIURLSession */; };
@@ -77,6 +78,7 @@
 				EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */,
 				EB20A0402ECADC5200A083CB /* SDKit.framework in Frameworks */,
 				C68783A82EC7BE4700018E28 /* Mocking in Frameworks */,
+				EB20A0AF2ECAF80F00A083CB /* Clocks in Frameworks */,
 				C68783102EC7A2ED00018E28 /* Combine.framework in Frameworks */,
 				EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */,
 			);
@@ -162,6 +164,7 @@
 				EB9B9DAE2EC44442002A16F3 /* OpenAPIURLSession */,
 				C69E59742EC5046B00A20C30 /* Prefire */,
 				C68783A72EC7BE4700018E28 /* Mocking */,
+				EB20A0AE2ECAF80F00A083CB /* Clocks */,
 			);
 			productName = PTZOKit;
 			productReference = EB72172F2EC1419700E972F9 /* PTZOKit.framework */;
@@ -228,6 +231,7 @@
 				C69E59782EC504C600A20C30 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				C68783A62EC7BE4700018E28 /* XCRemoteSwiftPackageReference "swift-mocking" */,
 				EB20A02D2ECA8A0D00A083CB /* XCRemoteSwiftPackageReference "swift-concurrency-extras" */,
+				EB20A0AD2ECAF80F00A083CB /* XCRemoteSwiftPackageReference "swift-clocks" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB7217302EC1419700E972F9 /* Products */;
@@ -583,6 +587,14 @@
 				minimumVersion = 1.3.2;
 			};
 		};
+		EB20A0AD2ECAF80F00A083CB /* XCRemoteSwiftPackageReference "swift-clocks" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-clocks.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.6;
+			};
+		};
 		EB9B9DAA2EC44423002A16F3 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-openapi-runtime";
@@ -634,6 +646,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB20A02D2ECA8A0D00A083CB /* XCRemoteSwiftPackageReference "swift-concurrency-extras" */;
 			productName = ConcurrencyExtras;
+		};
+		EB20A0AE2ECAF80F00A083CB /* Clocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB20A0AD2ECAF80F00A083CB /* XCRemoteSwiftPackageReference "swift-clocks" */;
+			productName = Clocks;
 		};
 		EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */ = {
 			isa = XCSwiftPackageProductDependency;

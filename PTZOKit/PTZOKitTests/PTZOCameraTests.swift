@@ -15,15 +15,14 @@ struct PTZOCameraTests {
     @Test func example() async throws {
         let client = MockClient()
 
-        let camera = PTZOCamera(name: "test", client: client)
-        #expect(camera.connectionStatus == .disconnected)
-        try await withMainSerialExecutor {
-
-            let task = Task { try await camera.connect() }
+        // TODO: This is mostly useless
+        await withMainSerialExecutor {
+            let camera = PTZOCamera(name: "test", client: client)
+            #expect(camera.connectionState == .disconnected)
             await Task.yield()
-            #expect(camera.connectionStatus == .connecting)
-            try await task.value
-            #expect(camera.connectionStatus == .connected)
+            #expect(camera.connectionState == .connecting)
+            await Task.yield()
+            #expect(camera.connectionState == .connected)
 
             client._presetCall.implementation = .returns(
                 Operations.PresetCall.Output.ok(.init())

@@ -2,7 +2,7 @@
 //  CameraProtocol.swift
 //  PTZOKit
 //
-//  Created by Nick Robison (Moody's) on 11/14/25.
+//  Created by Nick Robison on 11/14/25.
 //
 
 import Foundation

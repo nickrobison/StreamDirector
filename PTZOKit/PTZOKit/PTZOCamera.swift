@@ -2,18 +2,18 @@
 //  PTZOCamera.swift
 //  PTZOKit
 //
-//  Created by Nick Robison (Moody's) on 11/14/25.
+//  Created by Nick Robison on 11/14/25.
 //
 
 import Foundation
 import OSLog
 import Synchronization
 import SDKit
+import Clocks
 
 @Observable
-final class PTZOCamera<C: APIProtocol>: Sendable {
+final class PTZOCamera<C: APIProtocol>: CommandHandler, Sendable {
 
-    private let logger: Logger
     private let client: C
     
     private let state: State<CameraState>
@@ -26,18 +26,6 @@ final class PTZOCamera<C: APIProtocol>: Sendable {
         set {
             self.withMutation(keyPath: \.commandStatus) {
                 self.state.commandStatus = newValue
-            }
-        }
-    }
-    
-    var connectionStatus: ConnectionState {
-        get {
-            self.access(keyPath: \.connectionStatus)
-            return self.state.connectionStatus
-        }
-        set {
-            self.withMutation(keyPath: \.connectionStatus) {
-                self.state.connectionStatus = newValue
             }
         }
     }
@@ -55,14 +43,14 @@ final class PTZOCamera<C: APIProtocol>: Sendable {
     }
 
     init(name: String, client: C) {
-        self.logger = Logger.init(
+        let logger = Logger.init(
             subsystem:
                 "com.nickrobison.StreamDirector.PTZOKit.PTZOCamera.\(name)",
             category: "Camera"
         )
         self.client = client
-        self.logger.info("Connecting to camera")
         self.state = State(CameraState.init())
+        super.init(logger: logger, config: CommandHandlerConfig(), clock: ContinuousClock())
     }
     
     func callPreset(_ preset: Int) async {
@@ -72,11 +60,15 @@ final class PTZOCamera<C: APIProtocol>: Sendable {
         self.currentPreset = CameraPreset(name: "<none>", value: PresetValue.presetID(String(preset)))
         
     }
-
-    func connect() async throws {
-        self.connectionStatus = .connecting
+    
+    public override func doConnect() async -> Result<(), any Error> {
         await Task.yield()
-        self.connectionStatus = .connected
+        return .success(())
+    }
+    
+    public override func doHealthCheck() async -> Result<(), any Error> {
+        await Task.yield()
+        return .success(())
     }
     
     private func executeCameraCommand<T>(_ command: @escaping () async throws -> T) async -> T? {
