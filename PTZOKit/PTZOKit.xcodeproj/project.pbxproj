@@ -12,6 +12,8 @@
 		C69E59752EC5046B00A20C30 /* Prefire in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59742EC5046B00A20C30 /* Prefire */; };
 		C69E597A2EC504C600A20C30 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59792EC504C600A20C30 /* SnapshotTesting */; };
 		EB20A02F2ECA8A0D00A083CB /* ConcurrencyExtras in Frameworks */ = {isa = PBXBuildFile; productRef = EB20A02E2ECA8A0D00A083CB /* ConcurrencyExtras */; };
+		EB20A0402ECADC5200A083CB /* SDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB20A03F2ECADC5200A083CB /* SDKit.framework */; };
+		EB20A0412ECADC5200A083CB /* SDKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB20A03F2ECADC5200A083CB /* SDKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB72172F2EC1419700E972F9 /* PTZOKit.framework */; };
 		EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */; };
 		EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAE2EC44442002A16F3 /* OpenAPIURLSession */; };
@@ -27,8 +29,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		EB20A0422ECADC5300A083CB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EB20A0412ECADC5200A083CB /* SDKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		C687830F2EC7A2ED00018E28 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.1.sdk/System/Library/Frameworks/Combine.framework; sourceTree = DEVELOPER_DIR; };
+		EB20A03F2ECADC5200A083CB /* SDKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB72172F2EC1419700E972F9 /* PTZOKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PTZOKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7217382EC1419700E972F9 /* PTZOKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PTZOKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -58,6 +75,7 @@
 			files = (
 				C69E59752EC5046B00A20C30 /* Prefire in Frameworks */,
 				EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */,
+				EB20A0402ECADC5200A083CB /* SDKit.framework in Frameworks */,
 				C68783A82EC7BE4700018E28 /* Mocking in Frameworks */,
 				C68783102EC7A2ED00018E28 /* Combine.framework in Frameworks */,
 				EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */,
@@ -80,6 +98,7 @@
 		C69E59732EC5046B00A20C30 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EB20A03F2ECADC5200A083CB /* SDKit.framework */,
 				C687830F2EC7A2ED00018E28 /* Combine.framework */,
 			);
 			name = Frameworks;
@@ -126,6 +145,7 @@
 				EB72172B2EC1419700E972F9 /* Sources */,
 				EB72172C2EC1419700E972F9 /* Frameworks */,
 				EB72172D2EC1419700E972F9 /* Resources */,
+				EB20A0422ECADC5300A083CB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

@@ -8,27 +8,24 @@
 import Foundation
 import OSLog
 import Synchronization
+import SDKit
 
 @Observable
-class PTZOCamera<C: APIProtocol>: @unchecked Sendable {
+final class PTZOCamera<C: APIProtocol>: Sendable {
 
     private let logger: Logger
     private let client: C
     
-    private let state: Mutex<CameraState>
+    private let state: State<CameraState>
     
     var commandStatus: CommandStatus {
         get {
             self.access(keyPath: \.commandStatus)
-            return state.withLock { state in
-                state.commandStatus
-            }
+            return self.state.commandStatus
         }
         set {
             self.withMutation(keyPath: \.commandStatus) {
-                state.withLock { state in
-                    state.commandStatus = newValue
-                }
+                self.state.commandStatus = newValue
             }
         }
     }
@@ -36,15 +33,11 @@ class PTZOCamera<C: APIProtocol>: @unchecked Sendable {
     var connectionStatus: ConnectionState {
         get {
             self.access(keyPath: \.connectionStatus)
-            return state.withLock { state in
-                state.connectionStatus
-            }
+            return self.state.connectionStatus
         }
         set {
             self.withMutation(keyPath: \.connectionStatus) {
-                state.withLock { state in
-                    state.connectionStatus = newValue
-                }
+                self.state.connectionStatus = newValue
             }
         }
     }
@@ -52,15 +45,11 @@ class PTZOCamera<C: APIProtocol>: @unchecked Sendable {
     var currentPreset: CameraPreset? {
         get {
             self.access(keyPath: \.currentPreset)
-            return state.withLock { state in
-                state.activePreset
-            }
+            return state.activePreset
         }
         set {
             self.withMutation(keyPath: \.currentPreset) {
-                state.withLock { state in
-                    state.activePreset = newValue
-                }
+                state.activePreset = newValue
             }
         }
     }
@@ -73,7 +62,7 @@ class PTZOCamera<C: APIProtocol>: @unchecked Sendable {
         )
         self.client = client
         self.logger.info("Connecting to camera")
-        self.state = Mutex(CameraState.init())
+        self.state = State(CameraState.init())
     }
     
     func callPreset(_ preset: Int) async {
