@@ -28,9 +28,9 @@ private actor HandlerState {
 
 @Observable
 private final class HappyHandler: CommandHandler {
-    
+
     let _connectionState: State<ConnectionState>
-    
+
     var connectionState: ConnectionState {
         get {
             self.access(keyPath: \.connectionState)
@@ -42,14 +42,13 @@ private final class HappyHandler: CommandHandler {
             }
         }
     }
-    
+
     let clock: any Clock<Duration>
-    
+
     @ObservationIgnored
-    var healthTask: Task<Void, any Error>?
-    
+    let healthTask: State<Task<(), Never>?>
+
     let logger: Logger
-    
 
     let state: HandlerState
 
@@ -68,68 +67,152 @@ private final class HappyHandler: CommandHandler {
         self.clock = clock
         self.logger = testLogger
         self._connectionState = .init(.disconnected)
+        self.healthTask = .init(nil)
         Task {
             await connect(config: CommandHandlerConfig())
         }
     }
 }
 
-private class FailingConnectionHandler: AbstractCommandHandler {
+@Observable
+private final class FailingConnectionHandler: CommandHandler {
     enum TestError: Error {
         case connectionFailed
     }
 
-    override func doConnect() async -> Result<(), any Error> {
+
+    let _connectionState: State<ConnectionState>
+
+    var connectionState: ConnectionState {
+        get {
+            self.access(keyPath: \.connectionState)
+            return _connectionState.data
+        }
+        set {
+            self.withMutation(keyPath: \.connectionState) {
+                _connectionState.data = newValue
+            }
+        }
+    }
+
+    let clock: any Clock<Duration>
+
+    @ObservationIgnored
+    let healthTask: State<Task<(), Never>?>
+
+    let logger: Logger
+
+    let state: HandlerState
+
+    func doConnect() async -> Result<(), any Error> {
+        debugPrint("I'm doing to fail")
         await Task.yield()
         return .failure(TestError.connectionFailed)
     }
 
-    init(_ clock: any Clock<Duration>) {
-        super.init(
-            logger: testLogger,
-            config: CommandHandlerConfig(),
-            clock: clock
-        )
+    func doHealthCheck() async -> Result<(), any Error> {
+        await state.incHealthCount()
+        return .success(())
+    }
+
+    init(_ clock: any Clock<Duration>, state: HandlerState = HandlerState()) {
+        self.state = state
+        self.clock = clock
+        self.logger = testLogger
+        self._connectionState = .init(.disconnected)
+        self.healthTask = .init(nil)
+        Task {
+            await connect(config: CommandHandlerConfig())
+        }
     }
 }
 
-private class FailingHealthCheckHandler: AbstractCommandHandler {
+@Observable
+private final class FailingHealthCheckHandler: CommandHandler {
     enum TestError: Error {
         case healthCheckFailed
     }
 
-    override func doConnect() async -> Result<(), any Error> {
+    let _connectionState: State<ConnectionState>
+
+    var connectionState: ConnectionState {
+        get {
+            self.access(keyPath: \.connectionState)
+            return _connectionState.data
+        }
+        set {
+            self.withMutation(keyPath: \.connectionState) {
+                _connectionState.data = newValue
+            }
+        }
+    }
+
+    let clock: any Clock<Duration>
+
+    @ObservationIgnored
+    let healthTask: State<Task<(), Never>?>
+
+    let logger: Logger
+
+    let state: HandlerState
+
+    func doConnect() async -> Result<(), any Error> {
         await Task.yield()
         return .success(())
     }
 
-    override func doHealthCheck() async -> Result<(), any Error> {
+    func doHealthCheck() async -> Result<(), any Error> {
         await Task.yield()
         return .failure(TestError.healthCheckFailed)
     }
 
-    init(_ clock: any Clock<Duration>) {
-        super.init(
-            logger: testLogger,
-            config: CommandHandlerConfig(),
-            clock: clock
-        )
+    init(_ clock: any Clock<Duration>, state: HandlerState = HandlerState()) {
+        self.state = state
+        self.clock = clock
+        self.logger = testLogger
+        self._connectionState = .init(.disconnected)
+        self.healthTask = .init(nil)
+        Task {
+            await connect(config: CommandHandlerConfig())
+        }
     }
 }
 
-private class FlakyHealthCheckHandler: AbstractCommandHandler {
+
+@Observable
+private final class FlakyHealthCheckHandler: CommandHandler {
     enum TestError: Error {
         case healthCheckFailed
     }
 
     private let state: HandlerState
 
-    override func doConnect() async -> Result<(), any Error> {
+    let _connectionState: State<ConnectionState>
+    let logger: Logger
+
+    var connectionState: ConnectionState {
+        get {
+            self.access(keyPath: \.connectionState)
+            return _connectionState.data
+        }
+        set {
+            self.withMutation(keyPath: \.connectionState) {
+                _connectionState.data = newValue
+            }
+        }
+    }
+
+    let clock: any Clock<Duration>
+
+    @ObservationIgnored
+    let healthTask: State<Task<(), Never>?>
+
+    func doConnect() async -> Result<(), any Error> {
         await Task.yield()
         return .success(())
     }
 
-    override func doHealthCheck() async -> Result<(), any Error> {
+    func doHealthCheck() async -> Result<(), any Error> {
         let count = await state.healthCount
         await state.incHealthCount()
         if count == 0 {
@@ -138,13 +221,15 @@ private class FlakyHealthCheckHandler: AbstractCommandHandler {
         return .success(())
     }
 
-    init(_ clock: any Clock<Duration>, state: HandlerState) {
+    init(_ clock: any Clock<Duration>, state: HandlerState = HandlerState()) {
         self.state = state
-        super.init(
-            logger: testLogger,
-            config: CommandHandlerConfig(),
-            clock: clock
-        )
+        self.clock = clock
+        self.logger = testLogger
+        self._connectionState = .init(.disconnected)
+        self.healthTask = .init(nil)
+        Task {
+            await connect(config: CommandHandlerConfig())
+        }
     }
 }
 
@@ -166,53 +251,49 @@ struct CommandHandlerTests {
 
     @Test
     func testConnectionFailure() async throws {
-        await withMainSerialExecutor {
+        try await withMainSerialExecutor {
             let handler = FailingConnectionHandler(clock)
             #expect(handler.connectionState == .disconnected)
             await Task.yield()
             #expect(handler.connectionState == .connecting)
-            await waitForChanges(to: \.connectionState, on: handler)
-            guard case .failed = handler.connectionState else {
-                #expect(
-                    Bool(false),
-                    "Expected failed state. But got \(handler.connectionState)"
-                )
-                return
+            _ = try await waitUntil(path: \.connectionState, on: handler) { state in
+                guard case .failed = handler.connectionState else {
+                    return false
+                }
+                return true
             }
         }
     }
 
     @Test
     func testHealthCheck() async throws {
-        await withMainSerialExecutor {
-            let handler = HappyHandler(clock)
-            await waitForConnected(handler)
-            await clock.advance(by: .seconds(2))
-            // We need to yield to let the health check task run
-            await Task.yield()
-            let timesCalled = await handler.state.healthCount
-            #expect(timesCalled >= 1)
-        }
+        let handler = HappyHandler(clock)
+        try await waitForConnected(handler)
+        debugPrint("Connected")
+        await clock.advance(by: .seconds(2))
+        debugPrint("Advanced")
+        // We need to yield to let the health check task run
+        await Task.yield()
+        let timesCalled = await handler.state.healthCount
+        #expect(timesCalled >= 1)
     }
 
     @Test
     func testHealthCheckFailure() async throws {
         let handler = FailingHealthCheckHandler(clock)
-        await waitForConnected(handler)
+        try await waitForConnected(handler)
         #expect(handler.connectionState == .connected)
 
+        debugPrint("Advancing")
         // Advance clock to trigger health check
         await clock.advance(by: .seconds(1))
 
         // Wait for the state to change to failed
-        await waitForChanges(to: \.connectionState, on: handler)
-
-        guard case .failed = handler.connectionState else {
-            #expect(
-                Bool(false),
-                "Expected failed state after health check, but got \(handler.connectionState)"
-            )
-            return
+        _ = try await waitUntil(path: \.connectionState, on: handler) { state in
+            guard case .failed = handler.connectionState else {
+                return false
+            }
+            return true
         }
     }
 
@@ -222,79 +303,85 @@ struct CommandHandlerTests {
         let handler = FlakyHealthCheckHandler(clock, state: handlerState)
 
         // Wait for connection
-        await waitForConnected(handler)
+        try await waitForConnected(handler)
         #expect(handler.connectionState == .connected)
 
         // Advance clock for first (failing) health check
         await clock.advance(by: .seconds(1))
-        await waitForChanges(to: \.connectionState, on: handler)
-        guard case .failed = handler.connectionState else {
-            #expect(
-                Bool(false),
-                "Expected failed state, got \(handler.connectionState)"
-            )
-            return
+        _ = try await waitUntil(path: \.connectionState, on: handler) { state in
+            guard case .failed = handler.connectionState else {
+                return false
+            }
+            return true
         }
         var count = await handlerState.healthCount
         #expect(count == 1)
 
         // Advance clock for second (successful) health check
         await clock.advance(by: .seconds(1))
-        await waitForConnected(handler)
+        try await waitForConnected(handler)
         #expect(handler.connectionState == .connected)
         count = await handlerState.healthCount
         #expect(count == 2)
     }
 
-    private func waitForConnected(_ handler: AbstractCommandHandler) async {
-        var changes = 0
-        // We expect 2 changes: disconnected -> connecting -> connected
-        while handler.connectionState != .connected && changes < 2 {
-            await waitForChanges(to: \.connectionState, on: handler)
-            changes += 1
+    private func waitForConnected(_ handler: HappyHandler) async throws {
+        debugPrint("Wait for connected")
+        try await waitUntil(
+            path: \.connectionState,
+            on: handler
+        ) { result in
+            return result == .connected
+        }
+    }
+    private func waitForConnected(_ handler: FailingHealthCheckHandler) async throws {
+        debugPrint("Wait for connected")
+        try await waitUntil(
+            path: \.connectionState,
+            on: handler
+        ) { result in
+            return result == .connected
         }
     }
     
-    private func waitForConnected(_ handler: HappyHandler) async {
-        // We expect 2 changes: disconnected -> connecting -> connected
-        while handler.connectionState != .connected {
-            await waitForChanges(to: \.connectionState, on: handler)
+    private func waitForConnected(_ handler: FlakyHealthCheckHandler) async throws {
+        debugPrint("Wait for connected")
+        try await waitUntil(
+            path: \.connectionState,
+            on: handler
+        ) { result in
+            return result == .connected
         }
     }
 }
 
-func waitForChanges<T: Observable, U>(
+func waitForChanges<T: Observable, U: Sendable>(
     to keyPath: KeyPath<T, U>,
     on parent: T,
     timeout: Duration = .seconds(1)
-) async {
+) async -> U {
     await withCheckedContinuation { continuation in
         withObservationTracking {
-            _ = parent[keyPath: keyPath]
+            let res = parent[keyPath: keyPath]
+            debugPrint("I have value: \(res)")
+            continuation.resume(returning: res)
         } onChange: {
-            continuation.resume()
+            debugPrint("I changed")
         }
     }
 }
 
-enum TestTimeoutError: Error {
-    case timedOut
-}
-
-func withTimeout<T>(
-    seconds: TimeInterval,
-    operation: @escaping () async throws -> T
-) async throws -> T {
-    try await withThrowingTaskGroup(of: T.self) { group in
-        group.addTask {
-            try await operation()
-        }
-        group.addTask {
-            try await Task.sleep(for: .seconds(seconds))
-            throw TestTimeoutError.timedOut
-        }
-        let result = try await group.next()!
-        group.cancelAll()
-        return result
+func waitUntil<T: Observable, U: Sendable & Equatable>(
+    path keyPath: KeyPath<T, U>,
+    on parent: T,
+    timeout: Duration = .seconds(1),
+    _ predicate: @escaping (U?) -> Bool,
+) async throws {
+    debugPrint("First wait")
+    debugPrint("Let's wait for this")
+    var result: U? = nil
+    while (!predicate(result)) {
+        result = await waitForChanges(to: keyPath, on: parent)
+        debugPrint("Changed!")
     }
 }

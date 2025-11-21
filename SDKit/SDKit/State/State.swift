@@ -37,7 +37,7 @@ import Synchronization
 /// // The final value will be 2
 /// ```
 @dynamicMemberLookup
-public final class State<S: Sendable>: @unchecked Sendable {
+public final class State<S: Sendable>: Sendable {
     private let _data: Mutex<S>
 
     var data: S {
@@ -76,7 +76,7 @@ public final class State<S: Sendable>: @unchecked Sendable {
     ///
     /// - Parameter body: A closure that takes an `inout` reference to the state.
     /// - Returns: The value returned by the closure.
-    public func withLock<T>(_ body: (inout S) throws -> T) rethrows -> T {
+    public func withLock<T>(_ body: (inout sending S) throws -> sending T) rethrows -> T {
         return try self._data.withLock(body)
     }
 

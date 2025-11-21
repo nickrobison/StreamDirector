@@ -9,7 +9,7 @@ import OSLog
 public protocol CommandHandler: AnyObject, Connectable, Sendable {
     var _connectionState: State<ConnectionState> { get }
     var clock: any Clock<Duration> { get }
-    var healthTask: Task<Void, Error>? { get set }
+    var healthTask: State<Task<(), Never>?> { get }
 
     var logger: Logger { get }
 
@@ -41,7 +41,7 @@ extension CommandHandler {
         logger.info(
             "Registering health check with interval of \(config.healthCheckInterval)"
         )
-        healthTask = Task {
+        let tsk = Task {
             while !Task.isCancelled {
                 try? await clock.sleep(
                     for: config.healthCheckInterval
@@ -62,5 +62,6 @@ extension CommandHandler {
                 }
             }
         }
+        healthTask.data = tsk
     }
 }
