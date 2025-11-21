@@ -8,16 +8,20 @@
 import Observation
 import Testing
 import ConcurrencyExtras
+import Clocks
 @testable import PTZOKit
 
 struct PTZOCameraTests {
+    
+    private let clock = TestClock()
 
     @Test func example() async throws {
         let client = MockClient()
 
-        // TODO: This is mostly useless
+        // TODO: This is mostly useless as it just tests what the CommandHandler tests test
+        // But at least we know things compile?
         await withMainSerialExecutor {
-            let camera = PTZOCamera(name: "test", client: client)
+            let camera = PTZOCamera(name: "test", client: client, clock: clock)
             #expect(camera.connectionState == .disconnected)
             await Task.yield()
             #expect(camera.connectionState == .connecting)

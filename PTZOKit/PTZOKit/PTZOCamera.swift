@@ -12,9 +12,17 @@ import SDKit
 import Clocks
 
 @Observable
-final class PTZOCamera<C: APIProtocol>: AbstractCommandHandler, Sendable {
+final class PTZOCamera<C: APIProtocol>: CommandHandler {
+    let _connectionState: State<ConnectionState>
+    
+    let clock: any Clock<Duration>
+    
+    let healthTask: State<Task<(), Never>?>
+    
 
     private let client: C
+    
+    let logger: Logger
     
     private let state: State<CameraState>
     
@@ -26,6 +34,18 @@ final class PTZOCamera<C: APIProtocol>: AbstractCommandHandler, Sendable {
         set {
             self.withMutation(keyPath: \.commandStatus) {
                 self.state.commandStatus = newValue
+            }
+        }
+    }
+    
+    var connectionState: ConnectionState {
+        get {
+            self.access(keyPath: \.connectionState)
+            return self._connectionState.data
+        }
+        set {
+            self.withMutation(keyPath: \.connectionState) {
+                self._connectionState.data = newValue
             }
         }
     }
@@ -42,15 +62,22 @@ final class PTZOCamera<C: APIProtocol>: AbstractCommandHandler, Sendable {
         }
     }
 
-    init(name: String, client: C) {
-        let logger = Logger.init(
+    init(name: String, client: C, clock: any Clock<Duration>) {
+        self.logger = Logger.init(
             subsystem:
                 "com.nickrobison.StreamDirector.PTZOKit.PTZOCamera.\(name)",
             category: "Camera"
         )
         self.client = client
         self.state = State(CameraState.init())
-        super.init(logger: logger, config: CommandHandlerConfig(), clock: ContinuousClock())
+        self.healthTask = .init(nil)
+        self.clock = clock
+        self._connectionState = .init(.disconnected)
+        Task {
+            // TODO: Inject this
+            await connect(config: CommandHandlerConfig())
+        }
+        
     }
     
     func callPreset(_ preset: Int) async {
@@ -61,12 +88,12 @@ final class PTZOCamera<C: APIProtocol>: AbstractCommandHandler, Sendable {
         
     }
     
-    public override func doConnect() async -> Result<(), any Error> {
+    public func doConnect() async -> Result<(), any Error> {
         await Task.yield()
         return .success(())
     }
     
-    public override func doHealthCheck() async -> Result<(), any Error> {
+    public func doHealthCheck() async -> Result<(), any Error> {
         await Task.yield()
         return .success(())
     }

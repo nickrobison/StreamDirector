@@ -6,6 +6,7 @@
 //
 import OSLog
 
+// TODO: I hate this, why can't I just have an open class?
 public protocol CommandHandler: AnyObject, Connectable, Sendable {
     var _connectionState: State<ConnectionState> { get }
     var clock: any Clock<Duration> { get }
@@ -18,7 +19,7 @@ public protocol CommandHandler: AnyObject, Connectable, Sendable {
 }
 
 extension CommandHandler {
-    func connect(config: CommandHandlerConfig) async {
+    public func connect(config: CommandHandlerConfig) async {
         logger.info("Attempting to connect to device")
         _connectionState.data = .connecting
         let result = await doConnect()
@@ -37,7 +38,8 @@ extension CommandHandler {
         }
     }
 
-    func startHealthCheck(_ config: CommandHandlerConfig) {
+    // TODO: Does this really need to be public?
+    public func startHealthCheck(_ config: CommandHandlerConfig) {
         logger.info(
             "Registering health check with interval of \(config.healthCheckInterval)"
         )

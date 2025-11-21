@@ -40,7 +40,8 @@ import Synchronization
 public final class State<S: Sendable>: Sendable {
     private let _data: Mutex<S>
 
-    var data: S {
+    // TODO: This is the worst
+    public var data: S {
         get {
             return self._data.withLock { $0 }
         }

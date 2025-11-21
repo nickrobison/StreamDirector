@@ -15,6 +15,7 @@
 		EB20A0402ECADC5200A083CB /* SDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB20A03F2ECADC5200A083CB /* SDKit.framework */; };
 		EB20A0412ECADC5200A083CB /* SDKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EB20A03F2ECADC5200A083CB /* SDKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EB20A0AF2ECAF80F00A083CB /* Clocks in Frameworks */ = {isa = PBXBuildFile; productRef = EB20A0AE2ECAF80F00A083CB /* Clocks */; };
+		EB3DA12C2ED034A600EE91F3 /* Clocks in Frameworks */ = {isa = PBXBuildFile; productRef = EB3DA12B2ED034A600EE91F3 /* Clocks */; };
 		EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB72172F2EC1419700E972F9 /* PTZOKit.framework */; };
 		EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAB2EC44423002A16F3 /* OpenAPIRuntime */; };
 		EB9B9DAF2EC44442002A16F3 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = EB9B9DAE2EC44442002A16F3 /* OpenAPIURLSession */; };
@@ -89,6 +90,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB7217392EC1419700E972F9 /* PTZOKit.framework in Frameworks */,
+				EB3DA12C2ED034A600EE91F3 /* Clocks in Frameworks */,
 				EB20A02F2ECA8A0D00A083CB /* ConcurrencyExtras in Frameworks */,
 				C69E597A2EC504C600A20C30 /* SnapshotTesting in Frameworks */,
 			);
@@ -191,6 +193,7 @@
 			packageProductDependencies = (
 				C69E59792EC504C600A20C30 /* SnapshotTesting */,
 				EB20A02E2ECA8A0D00A083CB /* ConcurrencyExtras */,
+				EB3DA12B2ED034A600EE91F3 /* Clocks */,
 			);
 			productName = PTZOKitTests;
 			productReference = EB7217382EC1419700E972F9 /* PTZOKitTests.xctest */;
@@ -648,6 +651,11 @@
 			productName = ConcurrencyExtras;
 		};
 		EB20A0AE2ECAF80F00A083CB /* Clocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB20A0AD2ECAF80F00A083CB /* XCRemoteSwiftPackageReference "swift-clocks" */;
+			productName = Clocks;
+		};
+		EB3DA12B2ED034A600EE91F3 /* Clocks */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB20A0AD2ECAF80F00A083CB /* XCRemoteSwiftPackageReference "swift-clocks" */;
 			productName = Clocks;
