@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CommandStatus {
+enum CommandStatus: Sendable {
     case idle
     case executing
     case failed(message: String)

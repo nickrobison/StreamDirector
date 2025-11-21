@@ -26,17 +26,22 @@ final class PTZOCamera<C: APIProtocol>: CommandHandler {
     
     private let state: State<CameraState>
     
-    var commandStatus: CommandStatus {
-        get {
-            self.access(keyPath: \.commandStatus)
-            return self.state.commandStatus
-        }
-        set {
-            self.withMutation(keyPath: \.commandStatus) {
-                self.state.commandStatus = newValue
-            }
-        }
-    }
+    
+    @ObservationIgnored
+    @ObservedState<PTZOCamera, CommandStatus, CameraState>(stateKeyPath: \PTZOCamera.state, valueKeyPath: \CameraState.commandStatus)
+    var commandStatus: CommandStatus
+    
+//    var commandStatus: CommandStatus {
+//        get {
+//            self.access(keyPath: \.commandStatus)
+//            return self.state.commandStatus
+//        }
+//        set {
+//            self.withMutation(keyPath: \.commandStatus) {
+//                self.state.commandStatus = newValue
+//            }
+//        }
+//    }
     
     var connectionState: ConnectionState {
         get {
@@ -103,7 +108,7 @@ final class PTZOCamera<C: APIProtocol>: CommandHandler {
         self.commandStatus = .executing
         do {
             defer { self.commandStatus = .idle}
-            return try await command()
+            return try await executeCommand(command)
         } catch let error {
             logger.error("Command execution failed: \(error.localizedDescription)")
             self.commandStatus = .failed(message: error.localizedDescription)

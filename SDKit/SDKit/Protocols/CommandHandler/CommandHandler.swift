@@ -16,6 +16,8 @@ public protocol CommandHandler: AnyObject, Connectable, Sendable {
 
     func connect(config: CommandHandlerConfig) async
     func startHealthCheck(_ config: CommandHandlerConfig)
+    
+    func executeCommand<T>(_ command: @escaping () async throws -> T) async throws -> T
 }
 
 extension CommandHandler {
@@ -65,5 +67,11 @@ extension CommandHandler {
             }
         }
         healthTask.data = tsk
+    }
+    
+    public func executeCommand<T>(_ command: @escaping () async throws -> T) async throws -> T {
+        logger.info("Executing command")
+        // TODO: Eventually this will handle retries and timeouts, but obviously not yet. Because I'm lazy
+        return try await command()
     }
 }
