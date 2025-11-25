@@ -7,6 +7,7 @@
 
 import Foundation
 import Spatial
+import SDKit
 
 struct CameraState {
     var commandStatus: CommandStatus = .idle

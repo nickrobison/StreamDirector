@@ -2,48 +2,103 @@
 //  PresetView.swift
 //  PTZOKit
 //
-//  Created by Nick Robison on 11/9/25.
+//  Created by Nick Robison on 11/24/25.
 //
 
+import OSLog
+import SDKit
 import SwiftUI
 
-struct PresetView: View {
-    
-    typealias ClickHandler = (CameraPreset) -> ()
-    
-    private let preset: CameraPreset
-    private let isActive: Bool
-    private let color: Color
-    private let handle: ClickHandler
-    
-    init(_ preset: CameraPreset, _ isActive: Bool, handler: @escaping ClickHandler) {
-        self.preset = preset
-        self.isActive = isActive
-        self.color = isActive ? .green : .blue
-        self.handle = handler
-        
-    }
-    
+struct PresetView<P: PresetHandler>: View {
+
+    var vm: PresetView.ViewModel
+
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+    ]
+
     var body: some View {
-        Button(preset.name) {
-            self.handle(preset)
+        LazyVGrid(columns: columns, spacing: 20) {
+            ForEach(vm.presets) { preset in
+                PresetButton(
+                    preset,
+                    preset == vm.activePreset,
+                    handler: self.handleClick
+                )
+            }
         }
-        // TODO: Replace with button style
-        .frame(maxWidth: .infinity)
-        .foregroundStyle(self.color)
-        .padding()
-        .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
-            .stroke(self.color, lineWidth: 2))
-        
+        .task {
+            await vm.fetchPresets()
+        }
+    }
+
+    func handleClick(preset: CameraPreset) {
+        debugPrint("Setting active preset: \(preset)")
+        Task {
+            await vm.activatePreset(preset)
+        }
     }
 }
 
-#Preview {
-    VStack {
-        PresetView(CameraPreset(name: "Home", value: .presetID("1")), false){ pv in
+#if DEBUG
+fileprivate struct PreviewData {
+    static let presets = [
+        CameraPreset(name: "Home", value: .presetID("1")),
+        CameraPreset(name: "Lectern", value: .presetID("2")),
+        CameraPreset(name: "Alter", value: .presetID("3")),
+        CameraPreset(name: "Entry", value: .presetID("4")),
+    ]
+    
+    static func makeHandler(_ active: CameraPreset? = nil) -> PresetHandlerMock {
+        let h = PresetHandlerMock()
+        h._getActivePreset.implementation = .returns(active)
+        h._getPresets.implementation = .returns(presets)
+        h._set.implementation = .returns(())
+
+        return h
+    }
+}
+#endif
+
+#Preview("No active presets") {
+    PresetView<PresetHandlerMock>(vm: PresetView.ViewModel(PreviewData.makeHandler()))
+}
+
+#Preview("Active preset") {
+    PresetView<PresetHandlerMock>(vm: PresetView.ViewModel(PreviewData.makeHandler(PreviewData.presets[2])))
+}
+
+extension PresetView {
+
+    @Observable
+    @MainActor
+    class ViewModel {
+        var presets: [CameraPreset] = []
+        var activePreset: CameraPreset? = nil
+
+        private let handler: P
+
+        init(_ handler: P) {
+            self.handler = handler
         }
-        PresetView(CameraPreset(name: "Home", value: .presetID("1")), true) { pv in
+
+        func fetchPresets() async {
+            do {
+                self.presets = try await handler.getPresets()
+                self.activePreset = try await handler.getActivePreset()
+            } catch {
+                debugPrint("Failed??")
+            }
+        }
+        
+        func activatePreset(_ preset: CameraPreset) async {
+            do {
+                try await self.handler.set(preset: preset)
+                self.activePreset = preset
+            } catch {
+                debugPrint("Failed??")
+            }
         }
     }
-    
 }

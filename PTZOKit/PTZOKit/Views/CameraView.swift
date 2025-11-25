@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDKit
 internal import Prefire
 
 struct CameraView: View {
@@ -16,7 +17,7 @@ struct CameraView: View {
         Divider()
         VStack {
             ForEach(vm.presets) { preset in
-                PresetView(preset, vm.preset(isActive: preset), handler: selectPresent)
+                PresetButton(preset, vm.preset(isActive: preset), handler: selectPresent)
             }
         }
     }
@@ -28,7 +29,7 @@ struct CameraView: View {
 
 extension CameraView {
     @Observable
-    @MainActor
+    
     class ViewModel {
         var name: String
         var selectedPreset: CameraPreset?

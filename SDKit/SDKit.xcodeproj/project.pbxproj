@@ -12,6 +12,7 @@
 		EB20A09E2ECAF20C00A083CB /* Mocking in Frameworks */ = {isa = PBXBuildFile; productRef = EB20A09D2ECAF20C00A083CB /* Mocking */; };
 		EB20A0A62ECAF5DA00A083CB /* ConcurrencyExtras in Frameworks */ = {isa = PBXBuildFile; productRef = EB20A0A52ECAF5DA00A083CB /* ConcurrencyExtras */; };
 		EB369CC12E66494F00834E5E /* SDKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB369CB72E66494F00834E5E /* SDKit.framework */; };
+		EB6ED4872ED5714E00C22FE8 /* Mocking in Frameworks */ = {isa = PBXBuildFile; productRef = EB6ED4862ED5714E00C22FE8 /* Mocking */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB20A07E2ECAE6D600A083CB /* Clocks in Frameworks */,
+				EB6ED4872ED5714E00C22FE8 /* Mocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +125,7 @@
 			name = SDKit;
 			packageProductDependencies = (
 				EB20A07D2ECAE6D600A083CB /* Clocks */,
+				EB6ED4862ED5714E00C22FE8 /* Mocking */,
 			);
 			productName = SDKit;
 			productReference = EB369CB72E66494F00834E5E /* SDKit.framework */;
@@ -575,6 +578,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB20A0A42ECAF5DA00A083CB /* XCRemoteSwiftPackageReference "swift-concurrency-extras" */;
 			productName = ConcurrencyExtras;
+		};
+		EB6ED4862ED5714E00C22FE8 /* Mocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB20A09C2ECAF20C00A083CB /* XCRemoteSwiftPackageReference "swift-mocking" */;
+			productName = Mocking;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
