@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import SQLiteData
 
 struct CameraPreset: Equatable {
     let name: String
     let value: PresetValue
 }
 
-enum PresetValue: Equatable {
+enum PresetValue: Codable, Equatable, Hashable {
     case presetID(String)
 }
 

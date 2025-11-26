@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C68783102EC7A2ED00018E28 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C687830F2EC7A2ED00018E28 /* Combine.framework */; };
 		C68783A82EC7BE4700018E28 /* Mocking in Frameworks */ = {isa = PBXBuildFile; productRef = C68783A72EC7BE4700018E28 /* Mocking */; };
+		C68961772ED79BCF00E42374 /* SQLiteData in Frameworks */ = {isa = PBXBuildFile; productRef = C68961762ED79BCF00E42374 /* SQLiteData */; };
 		C69E59752EC5046B00A20C30 /* Prefire in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59742EC5046B00A20C30 /* Prefire */; };
 		C69E597A2EC504C600A20C30 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = C69E59792EC504C600A20C30 /* SnapshotTesting */; };
 		EB20A02F2ECA8A0D00A083CB /* ConcurrencyExtras in Frameworks */ = {isa = PBXBuildFile; productRef = EB20A02E2ECA8A0D00A083CB /* ConcurrencyExtras */; };
@@ -81,6 +82,7 @@
 				C68783A82EC7BE4700018E28 /* Mocking in Frameworks */,
 				EB20A0AF2ECAF80F00A083CB /* Clocks in Frameworks */,
 				C68783102EC7A2ED00018E28 /* Combine.framework in Frameworks */,
+				C68961772ED79BCF00E42374 /* SQLiteData in Frameworks */,
 				EB9B9DAC2EC44423002A16F3 /* OpenAPIRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,6 +169,7 @@
 				C69E59742EC5046B00A20C30 /* Prefire */,
 				C68783A72EC7BE4700018E28 /* Mocking */,
 				EB20A0AE2ECAF80F00A083CB /* Clocks */,
+				C68961762ED79BCF00E42374 /* SQLiteData */,
 			);
 			productName = PTZOKit;
 			productReference = EB72172F2EC1419700E972F9 /* PTZOKit.framework */;
@@ -235,6 +238,7 @@
 				C68783A62EC7BE4700018E28 /* XCRemoteSwiftPackageReference "swift-mocking" */,
 				EB20A02D2ECA8A0D00A083CB /* XCRemoteSwiftPackageReference "swift-concurrency-extras" */,
 				EB20A0AD2ECAF80F00A083CB /* XCRemoteSwiftPackageReference "swift-clocks" */,
+				C68961752ED79BCF00E42374 /* XCRemoteSwiftPackageReference "sqlite-data" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB7217302EC1419700E972F9 /* Products */;
@@ -566,6 +570,14 @@
 				minimumVersion = 0.2.2;
 			};
 		};
+		C68961752ED79BCF00E42374 /* XCRemoteSwiftPackageReference "sqlite-data" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/sqlite-data";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 		C69E596E2EC5039700A20C30 /* XCRemoteSwiftPackageReference "Prefire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BarredEwe/Prefire.git";
@@ -629,6 +641,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C68783A62EC7BE4700018E28 /* XCRemoteSwiftPackageReference "swift-mocking" */;
 			productName = Mocking;
+		};
+		C68961762ED79BCF00E42374 /* SQLiteData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C68961752ED79BCF00E42374 /* XCRemoteSwiftPackageReference "sqlite-data" */;
+			productName = SQLiteData;
 		};
 		C69E596F2EC503CE00A20C30 /* PrefireTestsPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
