@@ -10,6 +10,7 @@ import OSLog
 import Synchronization
 import SDKit
 import Clocks
+import OpenAPIURLSession
 
 @Observable
 final class PTZOCamera<C: APIProtocol>: CommandHandler {
@@ -109,5 +110,14 @@ final class PTZOCamera<C: APIProtocol>: CommandHandler {
             self.commandStatus = .failed(message: error.localizedDescription)
             return nil
         }
+    }
+}
+
+extension PTZOCamera {
+    
+    convenience init(record: CameraRecord) {
+        let url = URL(string: "http://\(record.hostname):\(record.port)")!
+        let client = Client(serverURL: url, transport: URLSessionTransport())
+        self.init(name: record.name, client: client as! C, clock: .suspending)
     }
 }
