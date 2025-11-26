@@ -9,7 +9,7 @@ import Foundation
 import SQLiteData
 
 @Table
-struct CameraRecord: Hashable, Identifiable {
+nonisolated struct CameraRecord: Hashable, Identifiable {
     let id: UUID
     var name: String
     var hostname: String
@@ -21,7 +21,7 @@ struct CameraRecord: Hashable, Identifiable {
 @Table
 struct PresetRecord: Hashable, Identifiable {
     let id: Int
-    var name = ""
+    var name: String
     var cameraId: CameraRecord.ID
     @Column(as: PresetValue.JSONRepresentation.self)
     var value: PresetValue
