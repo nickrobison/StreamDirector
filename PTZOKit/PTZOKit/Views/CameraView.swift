@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SDKit
-internal import Prefire
+import Prefire
 
 struct CameraView: View {
     let vm: ViewModel

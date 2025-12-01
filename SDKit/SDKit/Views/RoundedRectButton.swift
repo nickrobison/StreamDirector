@@ -12,7 +12,7 @@ public struct RoundedRectButton: ButtonStyle {
     
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .frame(maxWidth: .infinity)
+//            .frame(maxWidth: .infinity)
             .foregroundStyle(.tint)
             .padding()
             .background(RoundedRectangle(cornerRadius: 10, style: .continuous)

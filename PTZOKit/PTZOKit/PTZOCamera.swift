@@ -26,22 +26,17 @@ final class PTZOCamera<C: APIProtocol>: CommandHandler {
     
     private let state: State<CameraState>
     
-    
-    @ObservationIgnored
-    @ObservedState<PTZOCamera, CommandStatus, CameraState>(stateKeyPath: \PTZOCamera.state, valueKeyPath: \CameraState.commandStatus)
-    var commandStatus: CommandStatus
-    
-//    var commandStatus: CommandStatus {
-//        get {
-//            self.access(keyPath: \.commandStatus)
-//            return self.state.commandStatus
-//        }
-//        set {
-//            self.withMutation(keyPath: \.commandStatus) {
-//                self.state.commandStatus = newValue
-//            }
-//        }
-//    }
+    var commandStatus: CommandStatus {
+        get {
+            self.access(keyPath: \.commandStatus)
+            return self.state.commandStatus
+        }
+        set {
+            self.withMutation(keyPath: \.commandStatus) {
+                self.state.commandStatus = newValue
+            }
+        }
+    }
     
     var connectionState: ConnectionState {
         get {

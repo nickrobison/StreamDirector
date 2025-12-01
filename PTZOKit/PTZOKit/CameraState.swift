@@ -8,9 +8,11 @@
 import Foundation
 import Spatial
 import SDKit
+import CoreMedia
 
 struct CameraState {
     var commandStatus: CommandStatus = .idle
     var orientation: Point3D = Point3D.zero
     var activePreset: CameraPreset? = nil
+    var videoFormat: VideoFormat? = nil
 }
