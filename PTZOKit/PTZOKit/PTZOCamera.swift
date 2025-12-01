@@ -7,7 +7,6 @@
 
 import Foundation
 import OSLog
-import Synchronization
 import SDKit
 import Clocks
 import OpenAPIURLSession

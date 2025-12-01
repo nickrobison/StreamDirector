@@ -17,7 +17,7 @@ public struct CameraPreset: Equatable, Sendable {
     }
 }
 
-public enum PresetValue: Equatable, Sendable {
+public enum PresetValue: Equatable, Sendable, Codable, Hashable {
     case presetID(String)
 }
 
