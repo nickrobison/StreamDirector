@@ -8,6 +8,7 @@
 import Testing
 import Foundation
 import Clocks
+import OSLog
 @testable import SDKit
 
 struct TaskRetryTests {
@@ -43,12 +44,10 @@ struct TaskRetryTests {
         }
         
         // Wait for the task to start and fail the first time
-        // It should be sleeping for 1s (minDelay * 2^0) = 1s
         await Task.yield()
         await clock.advance(by: .seconds(1))
         
         // Wait for the second failure
-        // It should be sleeping for 2s (minDelay * 2^1) = 2s
         await Task.yield()
         await clock.advance(by: .seconds(2))
         

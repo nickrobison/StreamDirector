@@ -6,6 +6,7 @@
 //
 import Foundation
 import Clocks
+import OSLog
 
 fileprivate func calculateDelay(minDelay: Duration, maxDelay: Duration, jitter: Double, attempt: Int) -> Duration {
     let rnd = 1.0 + Double.random(in: 0..<1) * jitter
@@ -45,19 +46,24 @@ extension Task where Failure == Error {
         minDelay: Duration = .milliseconds(500),
         maxDelay: Duration = .seconds(30),
         jitter: Double = 0.2,
-        operation: @Sendable @escaping () async throws -> Success
+        logger: Logger? = nil,
+        operation: sending @escaping () async throws -> Success
     ) -> Task {
         Task(priority: priority) {
             let attempts = max(1, maxRetryCount)
+            logger?.debug("Retrying with attempts: \(attempts). minDelay: \(minDelay), maxDelay: \(maxDelay) and jiter: \(jitter)")
             for attempt in 0..<attempts {
                 do {
+                    logger?.debug("Performing operation attempt: \(attempt)/\(maxRetryCount)")
                     return try await operation()
                 } catch {
                     // If this was the last attempt, rethrow the error
                     if attempt == attempts - 1 {
                         throw error
                     }
+                    logger?.error("Attempt: \(attempt) failed with error: \(error)")
                     let delay = calculateDelay(minDelay: minDelay, maxDelay: maxDelay, jitter: jitter, attempt: attempt)
+                    logger?.debug("Sleeping for \(delay)")
                     try await clock.sleep(for: delay)
                 }
             }
