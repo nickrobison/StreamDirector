@@ -10,9 +10,16 @@ import SwiftUI
 
 public struct RoundedRectButton: ButtonStyle {
     
+    let maxWidth: CGFloat?
+    
+    init(fullWidth: Bool) {
+        self.maxWidth = fullWidth ? .infinity : nil
+    }
+    
     public func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-//            .frame(maxWidth: .infinity)
+        configuration
+            .label
+            .frame(maxWidth: maxWidth)
             .foregroundStyle(.tint)
             .padding()
             .background(RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -22,8 +29,17 @@ public struct RoundedRectButton: ButtonStyle {
 
 extension ButtonStyle where Self == RoundedRectButton {
     public static var roundedRect: Self {
-        return .init()
+        return .init(fullWidth: false)
     }
+    
+    public static var fullWidthRoundedRect: Self {
+        return .init(fullWidth: true)
+    }
+    
+    public static func roundedRect(fullWidth: Bool = false) -> Self {
+        .init(fullWidth: fullWidth)
+    }
+    
 }
 
 struct RoundedRectButton_Previews: PreviewProvider {
@@ -32,7 +48,7 @@ struct RoundedRectButton_Previews: PreviewProvider {
             Button("Button 1") {
                 
             }
-            .buttonStyle(.roundedRect)
+            .buttonStyle(.roundedRect(fullWidth: true))
             Button("Button 2") {
                 
             }
@@ -41,7 +57,7 @@ struct RoundedRectButton_Previews: PreviewProvider {
             Button("Button Long One") {
                 
             }
-            .buttonStyle(.roundedRect)
+            .buttonStyle(.roundedRect(fullWidth: false))
             .tint(.green)
         }
         .padding()
