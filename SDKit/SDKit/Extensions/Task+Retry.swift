@@ -5,6 +5,7 @@
 //  Created by Nick Robison on 12/18/25.
 //
 import Foundation
+import Clocks
 
 fileprivate func calculateDelay(minDelay: Duration, maxDelay: Duration, jitter: Double, attempt: Int) -> Duration {
     let rnd = 1.0 + Double.random(in: 0..<1) * jitter
@@ -20,7 +21,16 @@ extension Task where Failure == Error {
     /// If the operation fails, it waits for a calculated delay before retrying.
     /// The delay increases exponentially with each attempt, modulated by a jitter factor.
     ///
+    /// Example:
+    /// ```swift
+    /// let task = Task.retrying(times: 3) {
+    ///     try await someFlakyOperation()
+    /// }
+    /// let result = try await task.value
+    /// ```
+    ///
     /// - Parameters:
+    ///   - clock: The clock to use for sleeping between retries. Defaults to `.continuous`.
     ///   - priority: The priority of the task. Defaults to `nil`.
     ///   - maxRetryCount: The maximum number of times to attempt the operation. Defaults to 5. Must be greater than 0.
     ///   - minDelay: The base delay before the first retry. Defaults to 500 milliseconds.
@@ -29,6 +39,7 @@ extension Task where Failure == Error {
     ///   - operation: The asynchronous operation to perform.
     /// - Returns: A Task that produces the result of the operation or throws the last error encountered.
     public static func retrying(
+        clock: any Clock<Duration> = .suspending,
         priority: TaskPriority? = nil,
         times maxRetryCount: Int = 5,
         minDelay: Duration = .milliseconds(500),
@@ -36,7 +47,6 @@ extension Task where Failure == Error {
         jitter: Double = 0.2,
         operation: @Sendable @escaping () async throws -> Success
     ) -> Task {
-        // TODO: Use injectable clock
         Task(priority: priority) {
             let attempts = max(1, maxRetryCount)
             for attempt in 0..<attempts {
@@ -47,8 +57,8 @@ extension Task where Failure == Error {
                     if attempt == attempts - 1 {
                         throw error
                     }
-                    
-                    try await Task<Never, Never>.sleep(for: calculateDelay(minDelay: minDelay, maxDelay: maxDelay, jitter: jitter, attempt: attempt))
+                    let delay = calculateDelay(minDelay: minDelay, maxDelay: maxDelay, jitter: jitter, attempt: attempt)
+                    try await clock.sleep(for: delay)
                 }
             }
             // This path should technically be unreachable due to the loop logic and throw,

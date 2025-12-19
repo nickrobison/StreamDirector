@@ -7,6 +7,7 @@
 
 import Testing
 import Foundation
+import Clocks
 @testable import SDKit
 
 struct TaskRetryTests {
@@ -31,8 +32,9 @@ struct TaskRetryTests {
             func getCount() -> Int { count }
         }
         let counter = Counter()
+        let clock = TestClock()
         
-        let task = Task.retrying(times: 5, minDelay: .milliseconds(1)) {
+        let task = Task.retrying(clock: clock, times: 5, minDelay: .seconds(1), jitter: 0) {
             await counter.increment()
             if await counter.getCount() < 3 {
                 throw TestError()
@@ -40,6 +42,17 @@ struct TaskRetryTests {
             return "Success"
         }
         
+        // Wait for the task to start and fail the first time
+        // It should be sleeping for 1s (minDelay * 2^0) = 1s
+        await Task.yield()
+        await clock.advance(by: .seconds(1))
+        
+        // Wait for the second failure
+        // It should be sleeping for 2s (minDelay * 2^1) = 2s
+        await Task.yield()
+        await clock.advance(by: .seconds(2))
+        
+        // Third attempt should succeed
         let result = try await task.value
         #expect(result == "Success")
         let count = await counter.getCount()
@@ -54,11 +67,22 @@ struct TaskRetryTests {
             func getCount() -> Int { count }
         }
         let counter = Counter()
+        let clock = TestClock()
         
-        let task = Task<String, Error>.retrying(times: 3, minDelay: .milliseconds(1)) {
+        let task = Task<String, Error>.retrying(clock: clock, times: 3, minDelay: .seconds(1), jitter: 0) {
             await counter.increment()
             throw TestError()
         }
+        
+        // Attempt 1 fails. Sleep 1s.
+        await Task.yield()
+        await clock.advance(by: .seconds(1))
+        
+        // Attempt 2 fails. Sleep 2s.
+        await Task.yield()
+        await clock.advance(by: .seconds(2))
+        
+        // Attempt 3 fails. Rethrows.
         
         do {
             _ = try await task.value
@@ -104,29 +128,34 @@ struct TaskRetryTests {
             func getCount() -> Int { count }
         }
         let counter = Counter()
+        let clock = TestClock()
         
-        let task = Task<String, Error>.retrying(times: 10, minDelay: .milliseconds(100)) {
+        let task = Task<String, Error>.retrying(clock: clock, times: 10, minDelay: .seconds(1), jitter: 0) {
             await counter.increment()
             throw TestError()
         }
         
-        // Let it run slightly to trigger at least one fail, then cancel
-        try await Task.sleep(for: .milliseconds(50))
+        // Let it run slightly to trigger at least one fail
+        await Task.yield()
+        
+        // Cancel before advancing clock (while it's sleeping)
         task.cancel()
+        
+        // Advance clock to wake it up if needed, though cancellation should trigger immediately
+        await clock.advance(by: .seconds(1))
         
         do {
             _ = try await task.value
             #expect(Bool(false), "Should have thrown CancellationError")
         } catch {
-            // Task.sleep throws CancellationError when cancelled, or the task mechanics might throw it
+            // Task.sleep throws CancellationError when cancelled
             #expect(error is CancellationError || error is TestError) 
         }
         
-        // Wait a bit to ensure it doesn't keep going
-        try await Task.sleep(for: .milliseconds(200))
+        // Ensure it doesn't keep going
+        await clock.advance(by: .seconds(100))
         
         let count = await counter.getCount()
-        // It shouldn't have run 10 times. Maybe 1 or 2.
         #expect(count < 10)
     }
 }
