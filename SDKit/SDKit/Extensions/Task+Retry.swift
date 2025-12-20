@@ -51,11 +51,15 @@ extension Task where Failure == Error {
     ) -> Task {
         Task(priority: priority) {
             let attempts = max(1, maxRetryCount)
+            let sw = Stopwatch()
             logger?.debug("Retrying with attempts: \(attempts). minDelay: \(minDelay), maxDelay: \(maxDelay) and jiter: \(jitter)")
             for attempt in 0..<attempts {
                 do {
                     logger?.debug("Performing operation attempt: \(attempt)/\(maxRetryCount)")
-                    return try await operation()
+                    sw.restart()
+                    let res = try await operation()
+                    logger?.debug("Operation attempt \(attempt) took \(sw.elapsed)")
+                    return res
                 } catch {
                     // If this was the last attempt, rethrow the error
                     if attempt == attempts - 1 {
