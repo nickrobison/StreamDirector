@@ -42,12 +42,13 @@ struct Migrator {
 extension Database {
     func seedPTZOSampleData() throws {
         try seed {
-            CameraRecord(id: UUID(1), name: "Camera 1", hostname: "camera1.local", port: 1234, configuration: CameraConfiguration(username: "admin"))
-            CameraRecord(id: UUID(2), name: "Camera 2", hostname: "camera2.local", port: 1234, configuration: CameraConfiguration(username: "admin"))
-        }
-        
-        for (index, name) in ["Alter", "Lectern", "Entry"].enumerated() {
-            PresetRecord(id: index, name: name, cameraId: UUID(1), value: .presetID(String(index)))
+            CameraRecord(id: UUID(1), name: "Camera 1", hostname: "camera1.local", port: 1234, configuration: CameraConfiguration(username: "admin", password: "test"))
+            CameraRecord(id: UUID(2), name: "Camera 2", hostname: "camera2.local", port: 1234, configuration: CameraConfiguration(username: "admin", password: "test"))
+            
+            
+            for (index, name) in ["Alter", "Lectern", "Entry"].enumerated() {
+                PresetRecord(id: index, name: name, cameraId: UUID(1), value: .presetID(String(index)))
+            }
         }
     }
 }

@@ -111,12 +111,3 @@ final class PTZOCamera<C: APIProtocol>: CommandHandler {
         }
     }
 }
-
-extension PTZOCamera {
-    
-    convenience init(record: CameraRecord) {
-        let url = URL(string: "http://\(record.hostname):\(record.port)")!
-        let client = Client(serverURL: url, transport: URLSessionTransport())
-        self.init(name: record.name, client: client as! C, clock: .suspending)
-    }
-}
