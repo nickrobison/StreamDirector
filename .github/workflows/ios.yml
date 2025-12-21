@@ -1,0 +1,54 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: macos-15
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Select Xcode version
+      run: sudo xcode-select -s /Applications/Xcode_16.1.app/Contents/Developer
+      
+    - name: Show Xcode version
+      run: xcodebuild -version
+      
+    - name: List available simulators
+      run: xcrun simctl list devices available
+      
+    - name: Build StreamDirector
+      run: |
+        xcodebuild clean build \
+          -workspace StreamDirector.xcworkspace \
+          -scheme StreamDirector \
+          -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
+          CODE_SIGNING_ALLOWED=NO \
+          | xcpretty && exit ${PIPESTATUS[0]}
+      
+    - name: Run Unit Tests
+      run: |
+        xcodebuild test \
+          -workspace StreamDirector.xcworkspace \
+          -scheme StreamDirector \
+          -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
+          -only-testing:StreamDirectorTests \
+          CODE_SIGNING_ALLOWED=NO \
+          | xcpretty && exit ${PIPESTATUS[0]}
+      
+    - name: Run UI Tests
+      run: |
+        xcodebuild test \
+          -workspace StreamDirector.xcworkspace \
+          -scheme StreamDirector \
+          -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
+          -only-testing:StreamDirectorUITests \
+          CODE_SIGNING_ALLOWED=NO \
+          | xcpretty && exit ${PIPESTATUS[0]}
