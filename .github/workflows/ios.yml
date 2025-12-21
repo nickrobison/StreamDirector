@@ -24,31 +24,34 @@ jobs:
     - name: List available simulators
       run: xcrun simctl list devices available
       
+    - name: Install xcpretty
+      run: gem install xcpretty
+      
     - name: Build StreamDirector
       run: |
-        xcodebuild clean build \
+        set -o pipefail && xcodebuild clean build \
           -workspace StreamDirector.xcworkspace \
           -scheme StreamDirector \
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
           CODE_SIGNING_ALLOWED=NO \
-          | xcpretty && exit ${PIPESTATUS[0]}
+          | xcpretty
       
     - name: Run Unit Tests
       run: |
-        xcodebuild test \
+        set -o pipefail && xcodebuild test \
           -workspace StreamDirector.xcworkspace \
           -scheme StreamDirector \
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
           -only-testing:StreamDirectorTests \
           CODE_SIGNING_ALLOWED=NO \
-          | xcpretty && exit ${PIPESTATUS[0]}
+          | xcpretty
       
     - name: Run UI Tests
       run: |
-        xcodebuild test \
+        set -o pipefail && xcodebuild test \
           -workspace StreamDirector.xcworkspace \
           -scheme StreamDirector \
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
           -only-testing:StreamDirectorUITests \
           CODE_SIGNING_ALLOWED=NO \
-          | xcpretty && exit ${PIPESTATUS[0]}
+          | xcpretty
