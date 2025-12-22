@@ -12,8 +12,7 @@ struct CameraFactory<C: APIProtocol> {
     
     typealias Value = PTZOCamera<C>
     typealias Args = CameraRecord
-    
-    var sessionFactory: URLSessionFactory
+
     var clientFactory: any ClientFactory<C>
     var clock: any Clock<Duration>
     

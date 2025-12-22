@@ -102,3 +102,10 @@ extension PresetView {
         }
     }
 }
+
+extension PresetView {
+    
+    init(handler: P) {
+        self.init(vm: ViewModel(handler))
+    }
+}

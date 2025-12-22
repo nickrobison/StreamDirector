@@ -111,3 +111,27 @@ final class PTZOCamera<C: APIProtocol>: CommandHandler {
         }
     }
 }
+
+extension PTZOCamera: PresetHandler {
+    func getPresets() async throws -> [SDKit.CameraPreset] {
+        return []
+    }
+    
+    func getActivePreset() async throws -> SDKit.CameraPreset? {
+        return nil
+    }
+    
+    func set(preset: SDKit.CameraPreset) async throws {
+        
+    }
+    
+    func add(preset: SDKit.CameraPreset) async throws {
+        
+    }
+    
+    func remove(preset: SDKit.CameraPreset) async throws {
+        
+    }
+    
+    
+}

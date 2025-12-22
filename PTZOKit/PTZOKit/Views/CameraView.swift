@@ -8,57 +8,34 @@
 import SwiftUI
 import SDKit
 import Prefire
+import Clocks
 
-struct CameraView: View {
-    let vm: ViewModel
+struct CameraView<C: APIProtocol>: View {
+    typealias Camera = PTZOCamera<C>
+    var camera: Camera
+    
     var body: some View {
-        Text(vm.name)
+        Text("Hello")
             .font(.title)
         Divider()
-        VStack {
-            ForEach(vm.presets) { preset in
-                PresetButton(preset, vm.preset(isActive: preset), handler: selectPresent)
-            }
-        }
+        Text("Presets?")
+        PresetView<Camera>(handler: camera)
     }
     
-    private func selectPresent(value: CameraPreset) {
-        self.vm.selectedPreset = value
-    }
-}
-
-extension CameraView {
-    @Observable
-    
-    class ViewModel {
-        var name: String
-        var selectedPreset: CameraPreset?
-        var presets: [CameraPreset] = []
-        
-        init(name: String) {
-            self.name = name
-        }
-        
-        convenience init(name: String, presets: [CameraPreset]) {
-            self.init(name: name)
-            self.presets = presets
-        }
-        
-        func preset(isActive preset: CameraPreset) -> Bool {
-            return self.selectedPreset == preset
-        }
-    }
+//    private func selectPresent(value: CameraPreset) {
+//        self.vm.selectedPreset = value
+//    }
 }
 
 struct CameraView_Previews: PreviewProvider, PrefireProvider {
+    private static let clock = TestClock()
     
-    static let presets = [
-        CameraPreset(name: "Home", value: .presetID("1")),
-        CameraPreset(name: "Lectern", value: .presetID("2")),
-        CameraPreset(name: "Alter", value: .presetID("3")),
-        CameraPreset(name: "Entry", value: .presetID("4"))
-    ]
+    static var camera: PTZOCamera<MockClient> {
+        let client = MockClient()
+        
+        return PTZOCamera(name:" Test", client: client, clock: clock)
+    }
     
-    static var previews = CameraView(vm: CameraView.ViewModel(name: "Camera 1", presets: presets))
+    static var previews = CameraView(camera: camera)
     
 }
