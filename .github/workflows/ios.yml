@@ -35,6 +35,7 @@ jobs:
         set -o pipefail && xcodebuild clean build \
           -workspace StreamDirector.xcworkspace \
           -scheme StreamDirector \
+          -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
           CODE_SIGNING_ALLOWED=NO \
           | xcpretty
@@ -44,6 +45,7 @@ jobs:
         set -o pipefail && xcodebuild test \
           -workspace StreamDirector.xcworkspace \
           -scheme StreamDirector \
+          -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
           -only-testing:StreamDirectorTests \
           CODE_SIGNING_ALLOWED=NO \
@@ -54,6 +56,7 @@ jobs:
         set -o pipefail && xcodebuild test \
           -workspace StreamDirector.xcworkspace \
           -scheme StreamDirector \
+          -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
           -only-testing:StreamDirectorUITests \
           CODE_SIGNING_ALLOWED=NO \
